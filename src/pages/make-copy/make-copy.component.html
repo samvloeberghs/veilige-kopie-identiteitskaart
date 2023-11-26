@@ -1,0 +1,108 @@
+<div class="scan-body">
+    <div class="scan-body__part">
+        <h2 class="sub-title headline-6">Voorkant</h2>
+
+        <button type="button" class="placeholder" (click)="handleScan('front', 'preview')"
+                *ngIf="!state.front.showScanPreview && !state.front.showPhoto">
+            <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
+            <span class="placeholder__text">Klik / duw hier om de voorkant van uw identiteitskaart te scannen</span>
+        </button>
+
+        <div class="video-container" id="video-container-front" *ngIf="state.front.showScanPreview">
+            <video id="video-front" class="video" autoplay webkit-playsinline playsinline></video>
+        </div>
+
+        <div class="photo-container" *ngIf="state.front.showPhoto">
+            <img [src]="state.front.photoUrl" class="photo">
+        </div>
+
+        <canvas class="preview-canvas" id="front-preview"></canvas>
+
+        <div class="action-wrapper">
+            <button type="button" mat-raised-button color="danger" (click)="handleScan('front', 'preview')"
+                    *ngIf="state.front.showPhoto">
+                <mat-icon>document_scanner</mat-icon>
+                Opnieuw
+            </button>
+            <button type="button" mat-raised-button color="warn" (click)="handleScan('front', 'cancel')"
+                    *ngIf="state.front.showScanPreview">
+                <mat-icon>close_small</mat-icon>
+                Annuleren
+            </button>
+            <button type="button" mat-raised-button color="primary" class="download-action" *ngIf="state.front.showPhoto"
+                    (click)="handleScan('front', 'download')">
+                Download
+                <mat-icon aria-hidden="true" fontIcon="download" class="list-item-icon"></mat-icon>
+            </button>
+            <button type="button" mat-raised-button color="primary" class="download-action"
+                    *ngIf="state.front.showScanPreview || !state.front.showPhoto"
+                    [disabled]="!state.front.showScanPreview"
+                    (click)="takePicture('front')">
+                Foto nemen
+                <mat-icon aria-hidden="true" fontIcon="save" class="list-item-icon"></mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <mat-divider class="scan-body__divider"></mat-divider>
+
+    <div class="scan-body__part">
+        <h2 class="sub-title headline-6">Achterkant</h2>
+
+        <button type="button" class="placeholder" (click)="handleScan('back', 'preview')"
+                *ngIf="!state.back.showScanPreview && !state.back.showPhoto">
+            <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
+            <span class="placeholder__text">Klik / duw hier om de voorkant van uw identiteitskaart te scannen</span>
+        </button>
+
+        <div class="video-container" id="video-container-back" *ngIf="state.back.showScanPreview">
+            <video id="video-back" class="video" autoplay webkit-playsinline playsinline></video>
+        </div>
+
+        <div class="photo-container" *ngIf="state.back.showPhoto">
+            <img [src]="state.back.photoUrl" class="photo">
+        </div>
+
+        <canvas class="preview-canvas" id="back-preview"></canvas>
+
+        <div class="action-wrapper">
+            <button type="button" mat-raised-button color="danger" (click)="handleScan('back', 'preview')"
+                    *ngIf="state.back.showPhoto">
+                <mat-icon>document_scanner</mat-icon>
+                Opnieuw
+            </button>
+            <button type="button" mat-raised-button color="warn" (click)="handleScan('back', 'cancel')"
+                    *ngIf="state.back.showScanPreview">
+                <mat-icon>close_small</mat-icon>
+                Annuleren
+            </button>
+            <button type="button" mat-raised-button color="primary" class="download-action" *ngIf="state.back.showPhoto"
+                    (click)="handleScan('back', 'download')">
+                Download
+                <mat-icon aria-hidden="true" fontIcon="download" class="list-item-icon"></mat-icon>
+            </button>
+            <button type="button" mat-raised-button color="primary" class="download-action"
+                    *ngIf="state.back.showScanPreview || !state.back.showPhoto"
+                    [disabled]="!state.back.showScanPreview"
+                    (click)="takePicture('back')">
+                Foto nemen
+                <mat-icon aria-hidden="true" fontIcon="save" class="list-item-icon"></mat-icon>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<!--
+<mat-divider class="divider"></mat-divider>
+<div class="action-body">
+    <span class="">
+        Gebruik de download knop onder elke scan om de scan als enkele afbeelding te downloaden. Gebruik deze knop om de beide afbeeldingen samen te downloaden als 1 afbeelding.
+    </span>
+    <button mat-raised-button color="primary" disabled class="action-body__button">
+        Download als 1 afbeelding
+        <mat-icon aria-hidden="true" fontIcon="download" class="list-item-icon"></mat-icon>
+    </button>
+</div>
+<mat-divider class="divider"></mat-divider>
+-->

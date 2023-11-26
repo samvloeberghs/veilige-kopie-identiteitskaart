@@ -1,0 +1,144 @@
+:host {
+  display: block;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+$gridunit: 8px;
+
+.scan-body {
+  @media only screen and (min-width: 720px) {
+    display: flex;
+    gap: 32px;
+  }
+
+  &__part {
+    @media only screen and (min-width: 720px) {
+      width: 50%;
+    }
+  }
+
+  &__divider {
+    margin: 24px 0 24px 0;
+    display: block;
+    @media only screen and (min-width: 720px) {
+      display: none;
+    }
+  }
+}
+
+.action-body {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: $gridunit;
+
+  &__button {
+    flex: 0 0 auto;
+  }
+}
+
+.video-container {
+  border: 3px dotted black;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 16/10;
+  border-radius: 10px;
+  margin-bottom: $gridunit * 2;
+  padding: 0;
+  overflow: hidden;
+}
+
+.video {
+  width: 100%;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.photo-container {
+  border: 3px dotted black;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 16/10;
+  border-radius: 10px;
+  margin-bottom: $gridunit * 2;
+  padding: 0;
+  overflow: hidden;
+}
+
+.photo {
+  width: 100%;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.placeholder {
+  border: 3px dotted black;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 16/10;
+  border-radius: $gridunit;
+  margin-bottom: $gridunit * 2;
+  background: white;
+  cursor: pointer;
+  padding: 0;
+  box-sizing: content-box;
+
+  &__icon {
+    font-size: 2.5em;
+    width: 1em;
+    height: 1em;
+    display: block;
+  }
+
+  &__text {
+    max-width: 200px;
+    display: block;
+    text-align: center;
+    margin: $gridunit auto;
+    font-size: 1.2em;
+    color: #444;
+  }
+}
+
+.sub-title {
+  margin: 0 0 $gridunit 0;
+}
+
+.sub-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.action-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.download-action {
+  justify-self: flex-end;
+}
+
+.preview-canvas {
+  display: none;
+}
