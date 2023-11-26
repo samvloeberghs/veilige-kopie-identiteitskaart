@@ -27,22 +27,30 @@
         <mat-sidenav-content>
             <div class="scan-body">
                 <div class="scan-body__part">
-                    <h2 class="sub-title headline-5">Voorkant</h2>
+                    <h2 class="sub-title headline-6">Voorkant</h2>
 
-                    <label class="photo-placeholder">
+                    <button type="button" class="photo-placeholder" (click)="handleScan('front', 'preview')"
+                            *ngIf="!showScanPreviewFront">
                         <mat-icon class="photo-placeholder-icon" color="accent">document_scanner</mat-icon>
                         <br/>
                         <span class="photo-placeholder-text">Klik / duw hier om de voorkant van uw identiteitskaart te scannen</span>
+                        <!--
                         <input id="voorkant" type="file" accept="image/*" capture="user"
                                (change)="onFileSelected($event, 'front')" hidden>
-                    </label>
+                        -->
+                    </button>
+                    <div class="video-container" *ngIf="showScanPreviewFront">
+                        <video id="front" class="video" autoplay></video>
+                    </div>
 
                     <div class="action-wrapper">
-                        <button mat-raised-button color="warn">
-                            <label for="voorkant" class="label">
-                                <mat-icon>document_scanner</mat-icon>
-                                Opnieuw
-                            </label>
+                        <button mat-raised-button color="danger" (click)="handleScan('front', 'preview')">
+                            <mat-icon>document_scanner</mat-icon>
+                            Opnieuw
+                        </button>
+                        <button mat-raised-button color="warn" (click)="handleScan('front', 'cancel')">
+                            <mat-icon>close_small</mat-icon>
+                            Annuleren
                         </button>
                         <button mat-raised-button color="primary" class="download-action">
                             Download
@@ -52,7 +60,7 @@
                 </div>
 
                 <mat-divider class="scan-body__divider"></mat-divider>
-
+                <!--
                 <div class="scan-body__part">
                     <h2 class="sub-title headline-5">Achterkant</h2>
 
@@ -78,6 +86,7 @@
                     </div>
 
                 </div>
+                -->
             </div>
 
             <mat-divider class="divider"></mat-divider>
@@ -98,9 +107,10 @@
             <p class="footer-body">
                 Deze handige tool werd ontwikkeld door <a class="link" href="https://samvloeberghs.be" target="_blank"
                                                           rel="noopener">Sam
-                Vloeberghs</a>. De volledige broncode kan worden ingekeken op <a href="https://github.com/samvloeberghs/veilige-kopie-identiteitskaart" class="link"
-                                                                                 target="_blank"
-                                                                                 rel="noopener">Github</a>.
+                Vloeberghs</a>. De volledige broncode kan worden ingekeken op <a
+                    href="https://github.com/samvloeberghs/veilige-kopie-identiteitskaart" class="link"
+                    target="_blank"
+                    rel="noopener">Github</a>.
                 <strong>Uw gegevens zijn veilig</strong>: Er worden geen cookies gebruikt en al uw data wordt lokaal
                 verwerkt in de applicatie waardoor er niets wordt verstuurd naar een server.
             </p>
