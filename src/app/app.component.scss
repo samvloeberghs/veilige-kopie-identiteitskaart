@@ -1,0 +1,149 @@
+.example-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.scan-body {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+
+  @media only screen and (min-width: 720px) {
+    display: flex;
+    gap: 32px;
+  }
+
+
+  &__part {
+    @media only screen and (min-width: 720px) {
+      width: 50%;
+    }
+  }
+
+  &__divider {
+    margin: 24px 0 24px 0;
+    display: block;
+    @media only screen and (min-width: 720px) {
+      display: none;
+    }
+  }
+}
+
+.label {
+  width: 100%;
+  display: flex;
+  heighT: 100%;
+  vertical-align: middle;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-body {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+
+  &__button {
+    flex: 0 0 auto;
+  }
+}
+
+.divider {
+  // margin: 24px 0 24px 0;
+}
+
+.footer-body {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  color: #666;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.photo-placeholder {
+  border: 3px dotted black;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background: white;
+  cursor: pointer;
+
+  &-icon {
+    font-size: 2.5em;
+    width: 1em;
+    height: 1em;
+  }
+
+  &-text {
+    max-width: 200px;
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 1.2em;
+    color: #444;
+  }
+}
+
+.sub-title {
+  margin: 0 0 8px 0;
+}
+
+.sub-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.action-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.download-action {
+  justify-self: flex-end;
+}
+
+.example-is-mobile .example-toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+}
+
+h1.example-app-name {
+  margin-left: 8px;
+}
+
+.example-sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+}
+
+.example-is-mobile .example-sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+}
+
+.list-item-icon {
+  vertical-align: middle;
+  margin-right: 16px;
+}

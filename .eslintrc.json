@@ -14,7 +14,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "veiligeKopieIdentiteitskaart",
+            "prefix": "vki",
             "style": "camelCase"
           }
         ],
@@ -22,7 +22,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "veilige-kopie-identiteitskaart",
+            "prefix": "vki",
             "style": "kebab-case"
           }
         ]
