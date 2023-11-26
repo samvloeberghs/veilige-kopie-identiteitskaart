@@ -52,7 +52,7 @@
         <button type="button" class="placeholder" (click)="handleScan('back', 'preview')"
                 *ngIf="!state.back.showScanPreview && !state.back.showPhoto">
             <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
-            <span class="placeholder__text">Klik / duw hier om de voorkant van uw identiteitskaart te scannen</span>
+            <span class="placeholder__text">Klik / duw hier om de achterkant van uw identiteitskaart te scannen</span>
         </button>
 
         <div class="video-container" id="video-container-back" *ngIf="state.back.showScanPreview">

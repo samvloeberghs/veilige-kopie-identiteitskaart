@@ -9,22 +9,26 @@
     <mat-sidenav-container class="sidenav-container"
                            [class.sidenav-container--is-mobile]="mobileQuery.matches">
         <mat-sidenav #sideNav mode="over"
-                     [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-            <mat-nav-list class="nav-list">
-                <a mat-list-item routerLink="/" class="center-flex">
+                     [fixedInViewport]="mobileQuery.matches" fixedTopGap="56"
+                     class="sidenav">
+            <mat-nav-list class="sidenav__nav-list">
+                <a mat-list-item routerLink="/" class="center-flex" routerLinkActive="active" ariaCurrentWhenActive="page">
                     <mat-icon aria-hidden="true" fontIcon="home" class="list-item-icon"></mat-icon>
                     Startpagina
                 </a>
-                <a mat-list-item routerLink="/kopie-maken" class="center-flex">
+                <a mat-list-item routerLink="/kopie-maken" class="center-flex" routerLinkActive="active" ariaCurrentWhenActive="page">
                     <mat-icon aria-hidden="true" fontIcon="document_scanner" class="list-item-icon"></mat-icon>
                     Kopie maken van ID kaart
                 </a>
-                <a mat-list-item routerLink="/over-ons" class="center-flex">
+                <a mat-list-item routerLink="/over-ons" class="center-flex" routerLinkActive="active" ariaCurrentWhenActive="page">
                     <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="info"
                               class="list-item-icon"></mat-icon>
                     Over deze applicatie
                 </a>
             </mat-nav-list>
+            <div class="sidenav__version">
+                Version: <strong>{{currentVersionSignal()}}</strong>
+            </div>
         </mat-sidenav>
 
         <mat-sidenav-content>

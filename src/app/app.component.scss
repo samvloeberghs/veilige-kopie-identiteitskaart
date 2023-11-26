@@ -38,9 +38,25 @@ $gridunit: 8px;
   margin-right: $gridunit * 2;
 }
 
-.nav-list {
-  margin-top: 0;
-  padding-top: 0;
+.sidenav {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+
+  &__nav-list {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  &__version {
+    border-top: 1px solid #ddd;
+    padding: $gridunit * 2;
+    font-size: 0.9em;
+    strong {
+      font-weight: 500;
+    }
+  }
+
 }
 
 .body {
