@@ -30,7 +30,7 @@ interface State {
   styleUrl: './make-copy.component.scss',
 })
 export default class MakeCopyComponent {
-  public state: State = {
+  state: State = {
     'front': {
       showScanPreview: false,
       showPhoto: false,
@@ -41,7 +41,7 @@ export default class MakeCopyComponent {
     }
   }
 
-  public handleScan(side: 'front' | 'back', command: 'cancel' | 'preview' | 'download'): void {
+  handleScan(side: 'front' | 'back', command: 'cancel' | 'preview' | 'download'): void {
     if (command === 'cancel') {
       this.state[side].showPhoto = false;
       this.state[side].showScanPreview = false;
@@ -50,15 +50,15 @@ export default class MakeCopyComponent {
     if (command === 'preview') {
       this.state[side].showPhoto = false;
       this.state[side].showScanPreview = true;
-      this.showPreview(side);
+      this.#showPreview(side);
     }
 
     if(command === 'download'){
-      this.createLinkAndDownload(side);
+      this.#createLinkAndDownload(side);
     }
   }
 
-  public takePicture(side: 'front' | 'back'): void {
+  takePicture(side: 'front' | 'back'): void {
     const canvas = document.getElementById(`${ side }-preview`) as HTMLCanvasElement;
     const context = canvas.getContext('2d');
     const player = document.getElementById(`video-${ side }`) as HTMLVideoElement;
@@ -78,11 +78,9 @@ export default class MakeCopyComponent {
     this.state[side].photoUrl = canvas.toDataURL('image/jpeg');
     this.state[side].showPhoto = true;
     this.state[side].showScanPreview = false;
-
-    // this.createLinkAndDownload(canvas.toDataURL('image/jpeg'), `${ side }.jpg`);
   }
 
-  private showPreview(side: 'front' | 'back'): void {
+  #showPreview(side: 'front' | 'back'): void {
     // setTimeout is necessary to because the element will
     // only be visible after the next render cycle
     setTimeout(() => {
@@ -104,7 +102,7 @@ export default class MakeCopyComponent {
     });
   }
 
-  private createLinkAndDownload(side: 'front' | 'back'): void {
+  #createLinkAndDownload(side: 'front' | 'back'): void {
     const objectURL = this.state[side].photoUrl as string;
     const fileName = `${ side }_${(new Date()).toISOString()}.jpg`;
     const linkElement = document.createElement('a');

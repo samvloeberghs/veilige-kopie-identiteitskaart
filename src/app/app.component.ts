@@ -27,29 +27,29 @@ export class AppComponent implements OnDestroy {
 
     #mobileQueryListener!: () => void;
 
-    public readonly currentVersionSignal = this.#updateService.currentVersionSignal;
-    public mobileQuery!: MediaQueryList;
+    readonly currentVersionSignal = this.#updateService.currentVersionSignal;
+    mobileQuery!: MediaQueryList;
 
     @ViewChild('sideNav')
     private readonly sideNav!: MatSidenav;
 
     constructor() {
-        this.setupMobileQueryListener();
-        this.setupRouteListener();
-        this.setupUpdateListener();
+        this.#setupMobileQueryListener();
+        this.#setupRouteListener();
+        this.#setupUpdateListener();
     }
 
-    public ngOnDestroy(): void {
+    ngOnDestroy(): void {
         this.mobileQuery.removeListener(this.#mobileQueryListener);
     }
 
-    private setupMobileQueryListener(): void {
+    #setupMobileQueryListener(): void {
         this.mobileQuery = this.#media.matchMedia('(max-width: 600px)');
         this.#mobileQueryListener = () => this.#changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this.#mobileQueryListener);
     }
 
-    private setupRouteListener(): void {
+    #setupRouteListener(): void {
         this.#router.events.pipe(
             filter((event) => event instanceof NavigationEnd)
         ).subscribe((event) => {
@@ -57,7 +57,7 @@ export class AppComponent implements OnDestroy {
         });
     }
 
-    private setupUpdateListener(): void {
+    #setupUpdateListener(): void {
         effect(() => {
             const newVersionAvailable = this.#updateService.newVersionAvailableSignal();
             if (newVersionAvailable) {
