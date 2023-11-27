@@ -61,7 +61,7 @@ export class AppComponent implements OnDestroy {
         effect(() => {
             const newVersionAvailable = this.#updateService.newVersionAvailableSignal();
             if (newVersionAvailable) {
-                const snackBarRef = this.#matSnackBar.open('New version available', 'Reload');
+                const snackBarRef = this.#matSnackBar.open('Nieuwe versie beschikbaar', 'Vernieuwen');
                 snackBarRef.onAction().subscribe(() => {
                     document.location.reload();
                 });

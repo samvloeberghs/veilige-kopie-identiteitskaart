@@ -25,8 +25,8 @@ body {
   align-items: center;
   border-radius: $gridunit;
   color: #052c65;
-  font: mat.get-theme-typography($theme, body-2, font);
-  letter-spacing: mat.get-theme-typography($theme, body-2, letter-spacing);
+  font: mat.get-theme-typography($theme, body-1, font);
+  letter-spacing: mat.get-theme-typography($theme, body-1, letter-spacing);
   margin-bottom: $gridunit * 2;
 
   &--info {

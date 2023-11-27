@@ -1,13 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
 import { wrapText } from 'wraptext.js';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface State {
     'front': {
@@ -38,9 +39,18 @@ interface State {
     styleUrl: './make-copy.component.scss',
 })
 export default class MakeCopyComponent {
+    @ViewChild('reasonTextarea')
+    private readonly reasonTextarea: any;
+
+    @ViewChild('reasonNgModel')
+    private readonly reasonNgModel: any;
+
+    readonly #matSnackBar = inject(MatSnackBar);
     readonly #activatedRoute = inject(ActivatedRoute);
 
     reason = '';
+    reasonEmpty = true;
+
     state: State = {
         'front': {
             showScanPreview: false,
@@ -63,9 +73,17 @@ export default class MakeCopyComponent {
         }
 
         if (command === 'preview') {
-            this.state[side].showPhoto = false;
-            this.state[side].showScanPreview = true;
-            this.#showPreview(side);
+            if((this.reasonNgModel.control as FormControl).invalid) {
+                (this.reasonNgModel.control as FormControl).markAsTouched();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                this.#matSnackBar.open('Reden ontbreekt', 'Sluit', {
+                    duration: 10000,
+                });
+            } else {
+                this.state[side].showPhoto = false;
+                this.state[side].showScanPreview = true;
+                this.#showPreview(side);
+            }
         }
 
         if (command === 'download') {
@@ -117,8 +135,8 @@ export default class MakeCopyComponent {
             }).lines
                 .map(t => t.join(''))
                 .forEach((line: string, i: number) => {
-                context.fillText(line, lineHeight, (i + 1) * lineHeight);
-            });
+                    context.fillText(line, lineHeight, (i + 1) * lineHeight);
+                });
         }
 
         // save the state
@@ -170,9 +188,9 @@ export default class MakeCopyComponent {
     #listenToReasonSearchParam(): void {
         // TODO: untilDestroyed
         this.#activatedRoute.queryParams.subscribe((params) => {
-            console.log(params);
             if (params['reden']) {
                 this.reason = params['reden'];
+                this.reasonEmpty = this.reason.length < 10;
             }
         })
     }

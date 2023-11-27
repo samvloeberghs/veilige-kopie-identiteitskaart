@@ -11,16 +11,17 @@
     </p>
 </div>
 <h3 class="home__sub-title">Hoe werkt het?</h3>
+<p class="home__text">
+    De applicatie werkt door het toevoegen van een watermerk aan de scan. Dit watermerk bevat
+    de reden voor de kopie en optioneel een geldigheidsdatum. Op deze manier <strong>limiteer je het gebruik van de kopie</strong> tot een bepaalde reden en zelfs een
+    bepaalde
+    datum.
+</p>
+<h3 class="home__sub-title">Stappenplan</h3>
 <ol class="home__text">
+    <li>Je geeft een zo speciek mogelijke reden op voor het maken van de kopie door ook aan te geven in welke periode de kopie geldig is.</li>
     <li>Je neemt een foto/scan van de voorkant en/of de achterkant van je identiteitskaart.</li>
-    <li>De applicatie werkt door het toevoegen van een watermerk aan de scan. Dit watermerk bevat
-        de reden voor de kopie en optioneel een geldigheidsdatum.
-    </li>
-
-    <li>Op deze manier <strong>limiteer je het gebruik van de kopie</strong> tot een bepaalde reden en zelfs een
-        bepaalde
-        datum.
-    </li>
+    <li>Je download de scans en gebruikt deze ter verificatie van uw identiteit bij de relevant service.</li>
 </ol>
 
 <form class="reason-body" method="GET" action="/kopie-maken">
@@ -33,7 +34,8 @@
         <textarea matInput id="reden"
                   name="reden"
                   placeholder="Bijvoorbeeld: &quot;Openen van rekening bij ING bank in januari 2024&quot;. Opgelet: hoe specifieker hoe beter!"
-                  rows="3">Openen van een rekening bij ING in November 2023</textarea>
+                  rows="3"></textarea>
+        <!-- Openen van een rekening bij ING in November 2023 -->
     </mat-form-field>
     <div class="home__action-wrapper">
         <button type="submit" mat-raised-button color="primary">
