@@ -1,35 +1,72 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ChangeDetectorRef, Component, effect, inject, OnDestroy, ViewChild } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+import { NgIf } from '@angular/common';
+import { filter } from 'rxjs';
+import { UpdateService } from '../services/update.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     standalone: true,
-    imports: [RouterModule, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, MatListModule],
+    imports: [RouterOutlet, RouterLink, RouterLinkActive, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, MatListModule, NgIf],
     selector: 'vki-root',
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnDestroy {
-    public mobileQuery: MediaQueryList;
-    private _mobileQueryListener: () => void;
+    readonly #changeDetectorRef = inject(ChangeDetectorRef);
+    readonly #media = inject(MediaMatcher);
+    readonly #router = inject(Router);
+    readonly #updateService = inject(UpdateService);
+    readonly #matSnackBar = inject(MatSnackBar);
 
-    constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
-        this.mobileQuery = media.matchMedia('(max-width: 600px)');
-        this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-        this.mobileQuery.addListener(this._mobileQueryListener);
+    #mobileQueryListener!: () => void;
+
+    readonly currentVersionSignal = this.#updateService.currentVersionSignal;
+    mobileQuery!: MediaQueryList;
+
+    @ViewChild('sideNav')
+    private readonly sideNav!: MatSidenav;
+
+    constructor() {
+        this.#setupMobileQueryListener();
+        this.#setupRouteListener();
+        this.#setupUpdateListener();
     }
 
     ngOnDestroy(): void {
-        this.mobileQuery.removeListener(this._mobileQueryListener);
+        this.mobileQuery.removeListener(this.#mobileQueryListener);
     }
 
-    public onFileSelected(event: Event, side: 'front' | 'back'): void {
-       console.log((event.target as HTMLInputElement).files, side);
+    #setupMobileQueryListener(): void {
+        this.mobileQuery = this.#media.matchMedia('(max-width: 600px)');
+        this.#mobileQueryListener = () => this.#changeDetectorRef.detectChanges();
+        this.mobileQuery.addListener(this.#mobileQueryListener);
+    }
+
+    #setupRouteListener(): void {
+        this.#router.events.pipe(
+            filter((event) => event instanceof NavigationEnd)
+        ).subscribe((event) => {
+            this.sideNav?.close();
+        });
+    }
+
+    #setupUpdateListener(): void {
+        effect(() => {
+            const newVersionAvailable = this.#updateService.newVersionAvailableSignal();
+            if (newVersionAvailable) {
+                const snackBarRef = this.#matSnackBar.open('New version available', 'Reload');
+                snackBarRef.onAction().subscribe(() => {
+                    document.location.reload();
+                });
+            }
+        });
     }
 
 }

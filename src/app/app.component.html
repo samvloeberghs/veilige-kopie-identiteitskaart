@@ -1,110 +1,51 @@
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
-    <mat-toolbar color="primary" class="example-toolbar">
-        <button mat-icon-button (click)="snav.toggle()">
+<div class="container" [class.example-is-mobile]="mobileQuery.matches">
+    <mat-toolbar color="primary" class="toolbar" [class.toolbar--is-mobile]="mobileQuery.matches">
+        <button mat-icon-button (click)="sideNav.toggle()">
             <mat-icon>menu</mat-icon>
         </button>
-        <h1 class="example-app-name">Veilige Kopie ID Kaart</h1>
+        <h1 class="toolbar__title">Veilige Kopie ID Kaart</h1>
     </mat-toolbar>
 
-    <mat-sidenav-container class="example-sidenav-container"
-                           [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-
-        <mat-sidenav #snav mode="over"
-                     [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-            <mat-nav-list>
-                <a mat-list-item routerLink="." class="center-flex">
-                    <mat-icon aria-hidden="true" fontIcon="document_scanner" class="list-item-icon"></mat-icon>
-                    Kopie maken
+    <mat-sidenav-container class="sidenav-container"
+                           [class.sidenav-container--is-mobile]="mobileQuery.matches">
+        <mat-sidenav #sideNav mode="over"
+                     [fixedInViewport]="mobileQuery.matches" fixedTopGap="56"
+                     class="sidenav">
+            <mat-nav-list class="sidenav__nav-list">
+                <a mat-list-item routerLink="/" class="center-flex" routerLinkActive="active" ariaCurrentWhenActive="page">
+                    <mat-icon aria-hidden="true" fontIcon="home" class="list-item-icon"></mat-icon>
+                    Startpagina
                 </a>
-                <a mat-list-item routerLink="." class="center-flex">
+                <a mat-list-item routerLink="/kopie-maken" class="center-flex" routerLinkActive="active" ariaCurrentWhenActive="page">
+                    <mat-icon aria-hidden="true" fontIcon="document_scanner" class="list-item-icon"></mat-icon>
+                    Kopie maken van ID kaart
+                </a>
+                <a mat-list-item routerLink="/over-ons" class="center-flex" routerLinkActive="active" ariaCurrentWhenActive="page">
                     <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="info"
                               class="list-item-icon"></mat-icon>
-                    Over ons
+                    Over deze applicatie
                 </a>
             </mat-nav-list>
+            <div class="sidenav__version">
+                Version: <strong>{{currentVersionSignal()}}</strong>
+            </div>
         </mat-sidenav>
 
         <mat-sidenav-content>
-            <div class="scan-body">
-                <div class="scan-body__part">
-                    <h2 class="sub-title headline-5">Voorkant</h2>
-
-                    <label class="photo-placeholder">
-                        <mat-icon class="photo-placeholder-icon" color="accent">document_scanner</mat-icon>
-                        <br/>
-                        <span class="photo-placeholder-text">Klik / duw hier om de voorkant van uw identiteitskaart te scannen</span>
-                        <input id="voorkant" type="file" accept="image/*" capture="user"
-                               (change)="onFileSelected($event, 'front')" hidden>
-                    </label>
-
-                    <div class="action-wrapper">
-                        <button mat-raised-button color="warn">
-                            <label for="voorkant" class="label">
-                                <mat-icon>document_scanner</mat-icon>
-                                Opnieuw
-                            </label>
-                        </button>
-                        <button mat-raised-button color="primary" class="download-action">
-                            Download
-                            <mat-icon aria-hidden="true" fontIcon="download" class="list-item-icon"></mat-icon>
-                        </button>
-                    </div>
-                </div>
-
-                <mat-divider class="scan-body__divider"></mat-divider>
-
-                <div class="scan-body__part">
-                    <h2 class="sub-title headline-5">Achterkant</h2>
-
-                    <label class="photo-placeholder">
-                        <mat-icon class="photo-placeholder-icon" color="accent">document_scanner</mat-icon>
-                        <br/>
-                        <span class="photo-placeholder-text">Klik / duw hier om de achterkant van uw identiteitskaart te scannen</span>
-                        <input id="achterkant" type="file" accept="image/*" capture="environment"
-                               (change)="onFileSelected($event, 'front')" hidden>
-                    </label>
-
-                    <div class="action-wrapper">
-                        <button mat-raised-button color="warn" disabled>
-                            <label for="achterkant" class="label">
-                                <mat-icon>document_scanner</mat-icon>
-                                Opnieuw
-                            </label>
-                        </button>
-                        <button mat-raised-button color="primary" disabled class="download-action">
-                            Download
-                            <mat-icon aria-hidden="true" fontIcon="download" class="list-item-icon"></mat-icon>
-                        </button>
-                    </div>
-
-                </div>
+            <div class="body">
+                <router-outlet></router-outlet>
             </div>
 
-            <mat-divider class="divider"></mat-divider>
-
-            <div class="action-body">
-                <!--
-                <span class="">
-                    Gebruik de download knop onder elke scan om de scan als enkele afbeelding te downloaden. Gebruik deze knop om de beide afbeeldingen samen te downloaden als 1 afbeelding.
-                </span>
-                -->
-                <button mat-raised-button color="primary" disabled class="download-action action-body__button">
-                    Download als 1 afbeelding
-                    <mat-icon aria-hidden="true" fontIcon="download" class="list-item-icon"></mat-icon>
-                </button>
-            </div>
-
-            <mat-divider class="divider"></mat-divider>
             <p class="footer-body">
                 Deze handige tool werd ontwikkeld door <a class="link" href="https://samvloeberghs.be" target="_blank"
                                                           rel="noopener">Sam
-                Vloeberghs</a>. De volledige broncode kan worden ingekeken op <a href="https://github.com/samvloeberghs/veilige-kopie-identiteitskaart" class="link"
-                                                                                 target="_blank"
-                                                                                 rel="noopener">Github</a>.
+                Vloeberghs</a>. De volledige broncode kan worden ingekeken op <a
+                    href="https://github.com/samvloeberghs/veilige-kopie-identiteitskaart" class="link"
+                    target="_blank"
+                    rel="noopener">Github</a>.
                 <strong>Uw gegevens zijn veilig</strong>: Er worden geen cookies gebruikt en al uw data wordt lokaal
                 verwerkt in de applicatie waardoor er niets wordt verstuurd naar een server.
             </p>
-
 
         </mat-sidenav-content>
     </mat-sidenav-container>
