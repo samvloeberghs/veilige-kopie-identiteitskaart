@@ -52,7 +52,7 @@ export class AppComponent implements OnDestroy {
     #setupRouteListener(): void {
         this.#router.events.pipe(
             filter((event) => event instanceof NavigationEnd)
-        ).subscribe((event) => {
+        ).subscribe(() => {
             this.sideNav?.close();
         });
     }
