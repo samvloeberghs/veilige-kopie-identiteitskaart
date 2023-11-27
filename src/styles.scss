@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@import './scss/variables';
 
 html, body {
   height: 100%;
@@ -8,3 +11,41 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.sub-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.alert {
+  display: flex;
+  padding: $gridunit *2 $gridunit * 2;
+  gap: $gridunit * 3;
+  align-items: center;
+  border-radius: $gridunit;
+  color: #052c65;
+  font: mat.get-theme-typography($theme, body-2, font);
+  letter-spacing: mat.get-theme-typography($theme, body-2, letter-spacing);
+  margin-bottom: $gridunit * 2;
+
+  &--info {
+    background-color: #cfe2ff;
+    border-color: currentColor;
+  }
+
+  &__icon {
+    color: currentColor;
+    flex: 0 0 auto;
+    font-size: 2em;
+    width: 1em !important;
+    height: 1em !important;
+    display: block;
+  }
+
+  &__description {
+    flex: 1;
+    margin: 0;
+  }
+}
+

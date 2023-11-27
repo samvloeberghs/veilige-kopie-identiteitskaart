@@ -1,3 +1,6 @@
+@import '../../scss/variables';
+@import '../../scss/mixins';
+
 :host {
   display: block;
 
@@ -6,12 +9,22 @@
   }
 }
 
-$gridunit: 8px;
+.make-copy {
+  @include base-content;
+}
+
+.reason-body {
+  margin: 0 0 $gridunit * 3 0;
+
+  &__field {
+    width: 100%;
+  }
+}
 
 .scan-body {
   @media only screen and (min-width: 720px) {
     display: flex;
-    gap: 32px;
+    gap: $gridunit * 6;
   }
 
   &__part {
@@ -21,8 +34,9 @@ $gridunit: 8px;
   }
 
   &__divider {
-    margin: 24px 0 24px 0;
+    margin: $gridunit * 3 0;
     display: block;
+
     @media only screen and (min-width: 720px) {
       display: none;
     }
@@ -30,7 +44,7 @@ $gridunit: 8px;
 }
 
 .action-body {
-  padding: 24px;
+  padding: $gridunit * 3;
   max-width: 800px;
   margin: 0 auto;
   display: flex;
@@ -118,20 +132,10 @@ $gridunit: 8px;
   }
 }
 
-.sub-title {
-  margin: 0 0 $gridunit 0;
-}
-
-.sub-title-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .action-wrapper {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: $gridunit * 2;
   justify-content: flex-end;
 }
 

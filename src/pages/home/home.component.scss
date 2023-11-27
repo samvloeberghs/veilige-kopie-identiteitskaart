@@ -1,7 +1,32 @@
+@import '../../scss/variables';
+@import '../../scss/mixins';
+
 :host {
   display: block;
 
   &[hidden] {
     display: none;
+  }
+}
+
+.reason-body {
+  margin: 0 0 $gridunit * 3 0;
+
+  &__field {
+    width: 100%;
+  }
+}
+
+.home {
+  @include base-content;
+
+  &__action-wrapper {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: $gridunit;
   }
 }

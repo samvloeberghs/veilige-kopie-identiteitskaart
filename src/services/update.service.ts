@@ -42,9 +42,9 @@ export class UpdateService {
 
         everySixHoursOnceAppIsStable$.subscribe(async () => {
             try {
-                const updateFound = await this.#swUpdate.checkForUpdate();
+                await this.#swUpdate.checkForUpdate();
             } catch (err) {
-                console.error('Failed to check for updates:', err);
+                console.warn('Failed to check for updates:', err);
             }
         });
     }

@@ -1,11 +1,27 @@
+<h2 class="make-copy__title">Kopie maken</h2>
+<div class="alert alert--info">
+    <mat-icon class="alert__icon">info</mat-icon>
+    <p class="alert__description">
+        <strong>Uw gegevens zijn veilig</strong>: Er worden geen cookies gebruikt en al uw data wordt lokaal
+        verwerkt in de applicatie waardoor er niets wordt verstuurd naar een server.
+    </p>
+</div>
+<div class="reason-body">
+    <h3 class="make-copy__sub-title"><label for="reason">Reden voor de kopie</label></h3>
+    <mat-form-field class="reason-body__field">
+        <textarea matInput id="reason" [(ngModel)]="reason"
+                  placeholder="Bijvoorbeeld: &quot;Openen van rekening bij ING bank in januari 2024&quot;. Opgelet: hoe specifieker hoe beter!"
+                  rows="3"></textarea>
+    </mat-form-field>
+</div>
 <div class="scan-body">
     <div class="scan-body__part">
-        <h2 class="sub-title headline-6">Voorkant</h2>
+        <h3 class="make-copy__sub-title">Voorkant document</h3>
 
         <button type="button" class="placeholder" (click)="handleScan('front', 'preview')"
                 *ngIf="!state.front.showScanPreview && !state.front.showPhoto">
             <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
-            <span class="placeholder__text">Klik / duw hier om de voorkant van uw identiteitskaart te scannen</span>
+            <span class="placeholder__text">Klik / duw hier om de voorkant van uw identiteitskaart (of ander document) te scannen</span>
         </button>
 
         <div class="video-container" id="video-container-front" *ngIf="state.front.showScanPreview">
@@ -29,7 +45,8 @@
                 <mat-icon>close_small</mat-icon>
                 Annuleren
             </button>
-            <button type="button" mat-raised-button color="primary" class="download-action" *ngIf="state.front.showPhoto"
+            <button type="button" mat-raised-button color="primary" class="download-action"
+                    *ngIf="state.front.showPhoto"
                     (click)="handleScan('front', 'download')">
                 Download
                 <mat-icon aria-hidden="true" fontIcon="download" class="list-item-icon"></mat-icon>
@@ -47,12 +64,12 @@
     <mat-divider class="scan-body__divider"></mat-divider>
 
     <div class="scan-body__part">
-        <h2 class="sub-title headline-6">Achterkant</h2>
+        <h3 class="make-copy__sub-title">Achterkant document</h3>
 
         <button type="button" class="placeholder" (click)="handleScan('back', 'preview')"
                 *ngIf="!state.back.showScanPreview && !state.back.showPhoto">
             <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
-            <span class="placeholder__text">Klik / duw hier om de achterkant van uw identiteitskaart te scannen</span>
+            <span class="placeholder__text">Klik / duw hier om de achterkant van uw identiteitskaart (of ander document) te scannen</span>
         </button>
 
         <div class="video-container" id="video-container-back" *ngIf="state.back.showScanPreview">

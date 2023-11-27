@@ -24,6 +24,7 @@
     "@nx/angular": "17.1.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "wraptext.js": "^1.2.0",
     "zone.js": "~0.14.0"
   },
   "devDependencies": {
