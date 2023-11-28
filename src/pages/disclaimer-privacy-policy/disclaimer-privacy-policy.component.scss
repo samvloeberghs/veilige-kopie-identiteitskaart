@@ -1,0 +1,14 @@
+@import '../../scss/variables';
+@import '../../scss/mixins';
+
+:host {
+  display: block;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.disclaimer-privacy-policy {
+  @include base-content;
+}
