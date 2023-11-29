@@ -7,8 +7,8 @@ import { FormControl, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
-import { wrapText } from 'wraptext.js';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ImageHandlingService } from '../../services/image-handling.service';
 
 interface State {
     'front': {
@@ -39,14 +39,13 @@ interface State {
     styleUrl: './make-copy.component.scss',
 })
 export default class MakeCopyComponent {
-    @ViewChild('reasonTextarea')
-    private readonly reasonTextarea: any;
-
     @ViewChild('reasonNgModel')
     private readonly reasonNgModel: any;
 
+    readonly now = new Date();
     readonly #matSnackBar = inject(MatSnackBar);
     readonly #activatedRoute = inject(ActivatedRoute);
+    readonly #imageHandlingService = inject(ImageHandlingService);
 
     reason = '';
     reasonEmpty = true;
@@ -73,9 +72,9 @@ export default class MakeCopyComponent {
         }
 
         if (command === 'preview') {
-            if((this.reasonNgModel.control as FormControl).invalid) {
+            if ((this.reasonNgModel.control as FormControl).invalid) {
                 (this.reasonNgModel.control as FormControl).markAsTouched();
-                window.scrollTo({ top: 0, behavior: "smooth" });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 this.#matSnackBar.open('Reden ontbreekt', 'Sluit', {
                     duration: 10000,
                 });
@@ -92,55 +91,27 @@ export default class MakeCopyComponent {
     }
 
     takePicture(side: 'front' | 'back'): void {
-        const canvas = document.getElementById(`${ side }-preview`) as HTMLCanvasElement;
-        const context = canvas.getContext('2d');
-
-        // copy the video frame to the canvas
         const player = document.getElementById(`video-${ side }`) as HTMLVideoElement;
         const video = document.getElementById(`video-${ side }`) as HTMLVideoElement;
         const ratio = 16 / 10;
         const newWidth = video.videoWidth;
         const newHeight = newWidth / ratio;
         const xOffset = video.videoWidth > newWidth ? (newWidth - video.videoWidth) / 2 : 0;
-        const yOffset =
-            video.videoHeight > newHeight ? (newHeight - video.videoHeight) / 2 : 0;
+        const yOffset = video.videoHeight > newHeight ? (newHeight - video.videoHeight) / 2 : 0;
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
 
-        canvas.width = newWidth;
-        canvas.height = newHeight;
-        context?.fillRect(xOffset, yOffset, newWidth, newHeight);
-        context?.drawImage(player, xOffset, yOffset, video.videoWidth, video.videoHeight);
-
-        // add the watermark text
-        if (context) {
-            const text = this.reason;
-            const font = '25px Arial';
-            const lineHeight = 60;
-
-            context.shadowOffsetX = 2;
-            context.shadowOffsetY = 2;
-            context.shadowBlur = 2;
-            context.shadowColor = 'rgba(0, 0, 0, 0.5)';
-            context.fillStyle = 'rgba(255,255,255,0.25)'
-            context.textAlign = 'left';
-            context.font = font;
-
-            // #wrapPostContent(font: string, lineHeight: number, content: string, maxWidth: number, maxHeight: number): string[] {
-            const expandedText = new Array(100).join(text + ' | '); //change the multipler for more lines
-            const maxLines = Math.floor(newHeight / lineHeight);
-
-            wrapText(expandedText, {
-                font: font,
-                maxWidth: (newWidth - lineHeight * 2),
-                maxLines: maxLines,
-            }).lines
-                .map(t => t.join(''))
-                .forEach((line: string, i: number) => {
-                    context.fillText(line, lineHeight, (i + 1) * lineHeight);
-                });
+        let sideText = 'Voorkant';
+        if(side === 'back') {
+            sideText = 'Achterkant';
         }
 
+        const fullReason = `(${ this.now.toLocaleDateString() } - ${sideText}) - Reden kopie: ${ this.reason }`;
+        this.#imageHandlingService.start('#ffffff', 0.5, 1.4, 2, this.reason, fullReason, player, newWidth, newHeight, xOffset, yOffset, videoWidth, videoHeight);
+
         // save the state
-        this.state[side].photoUrl = canvas.toDataURL('image/jpeg');
+        this.state[side].photoUrl = this.#imageHandlingService.getDataURL();
+        // this.state[side].photoUrl = canvas.toDataURL('image/jpeg');
         this.state[side].showPhoto = true;
         this.state[side].showScanPreview = false;
     }

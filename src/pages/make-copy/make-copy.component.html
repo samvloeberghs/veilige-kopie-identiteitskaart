@@ -7,21 +7,23 @@
     </p>
 </div>
 <div class="reason-body">
-    <h3 class="make-copy__sub-title" [class.make-copy__sub-title--error]="reasonNgModel.invalid && (reasonNgModel.dirty || reasonNgModel.touched)"><label for="reason">Reden voor de kopie</label></h3>
+    <h3 class="make-copy__sub-title"
+        [class.make-copy__sub-title--error]="reasonNgModel.invalid && (reasonNgModel.dirty || reasonNgModel.touched)">
+        <label for="reason">Reden voor de kopie</label></h3>
     <mat-form-field class="reason-body__field">
         <textarea matInput id="reason" [(ngModel)]="reason"
-                  maxlength="100"
+                  maxlength="75"
                   minlength="10"
                   required
                   placeholder="Bijvoorbeeld: &quot;Openen van rekening bij ING bank in januari 2024&quot;. Opgelet: hoe specifieker hoe beter!"
                   rows="3"
-                  #reasonTextarea
                   #reasonNgModel="ngModel"></textarea>
-        <mat-hint>Min 10, max 150 karakters.</mat-hint>
+        <mat-hint>Min 10, max 75 karakters.</mat-hint>
         <ng-container *ngIf="reasonNgModel.invalid && (reasonNgModel.dirty || reasonNgModel.touched)">
-            <mat-error *ngIf="reasonNgModel.hasError('required')">Reden is <strong>verplicht</strong> (10-150 karakters)</mat-error>
+            <mat-error *ngIf="reasonNgModel.hasError('required')">Reden is <strong>verplicht</strong> (10-75 karakters)
+            </mat-error>
             <mat-error *ngIf="reasonNgModel.hasError('minlength')">Reden moet minstens 10 karakters bevatten</mat-error>
-            <mat-error *ngIf="reasonNgModel.hasError('maxlength')">Reden mag maximaal 100 karakters bevatten</mat-error>
+            <mat-error *ngIf="reasonNgModel.hasError('maxlength')">Reden mag maximaal 75 karakters bevatten</mat-error>
         </ng-container>
     </mat-form-field>
 </div>
@@ -29,21 +31,22 @@
     <div class="scan-body__part">
         <h3 class="make-copy__sub-title">Voorkant document</h3>
 
-        <button type="button" class="placeholder" (click)="handleScan('front', 'preview')"
-                *ngIf="!state.front.showScanPreview && !state.front.showPhoto">
-            <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
-            <span class="placeholder__text">Klik / duw hier om de voorkant van uw identiteitskaart (of ander document) te scannen</span>
-        </button>
-
-        <div class="video-container" id="video-container-front" *ngIf="state.front.showScanPreview">
-            <video id="video-front" class="video" autoplay webkit-playsinline playsinline></video>
+        <div class="frame">
+            <button type="button" class="placeholder" (click)="handleScan('front', 'preview')"
+                    *ngIf="!state.front.showScanPreview && !state.front.showPhoto">
+                <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
+                <span class="placeholder__text">Klik / duw hier om de voorkant van uw identiteitskaart (of ander document) te scannen</span>
+            </button>
+            <div class="video-container" id="video-container-front" *ngIf="state.front.showScanPreview">
+                <video id="video-front" class="video" autoplay webkit-playsinline playsinline></video>
+            </div>
+            <div class="photo-container" *ngIf="state.front.showPhoto">
+                <img [src]="state.front.photoUrl" class="photo">
+            </div>
+            <div class="reden-overlay">
+                <div *ngIf="reasonNgModel.valid"><strong>({{now.toLocaleDateString()}} - Voorkant) - Reden kopie:</strong> {{reason}}</div>
+            </div>
         </div>
-
-        <div class="photo-container" *ngIf="state.front.showPhoto">
-            <img [src]="state.front.photoUrl" class="photo">
-        </div>
-
-        <canvas class="preview-canvas" id="front-preview"></canvas>
 
         <div class="action-wrapper">
             <button type="button" mat-raised-button color="danger" (click)="handleScan('front', 'preview')"
@@ -77,21 +80,22 @@
     <div class="scan-body__part">
         <h3 class="make-copy__sub-title">Achterkant document</h3>
 
-        <button type="button" class="placeholder" (click)="handleScan('back', 'preview')"
-                *ngIf="!state.back.showScanPreview && !state.back.showPhoto">
-            <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
-            <span class="placeholder__text">Klik / duw hier om de achterkant van uw identiteitskaart (of ander document) te scannen</span>
-        </button>
-
-        <div class="video-container" id="video-container-back" *ngIf="state.back.showScanPreview">
-            <video id="video-back" class="video" autoplay webkit-playsinline playsinline></video>
+        <div class="frame">
+            <button type="button" class="placeholder" (click)="handleScan('back', 'preview')"
+                    *ngIf="!state.back.showScanPreview && !state.back.showPhoto">
+                <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
+                <span class="placeholder__text">Klik / duw hier om de achterkant van uw identiteitskaart (of ander document) te scannen</span>
+            </button>
+            <div class="video-container" id="video-container-back" *ngIf="state.back.showScanPreview">
+                <video id="video-back" class="video" autoplay webkit-playsinline playsinline></video>
+            </div>
+            <div class="photo-container" *ngIf="state.back.showPhoto">
+                <img [src]="state.back.photoUrl" class="photo">
+            </div>
+            <div class="reden-overlay">
+                <div *ngIf="reasonNgModel.valid"><strong>({{now.toLocaleDateString()}} - Achterkant) - Reden kopie:</strong> {{reason}}</div>
+            </div>
         </div>
-
-        <div class="photo-container" *ngIf="state.back.showPhoto">
-            <img [src]="state.back.photoUrl" class="photo">
-        </div>
-
-        <canvas class="preview-canvas" id="back-preview"></canvas>
 
         <div class="action-wrapper">
             <button type="button" mat-raised-button color="danger" (click)="handleScan('back', 'preview')"
@@ -104,7 +108,8 @@
                 <mat-icon>close_small</mat-icon>
                 Annuleren
             </button>
-            <button type="button" mat-raised-button color="primary" class="download-action" *ngIf="state.back.showPhoto"
+            <button type="button" mat-raised-button color="primary" class="download-action"
+                    *ngIf="state.back.showPhoto"
                     (click)="handleScan('back', 'download')">
                 Download
                 <mat-icon aria-hidden="true" fontIcon="download" class="list-item-icon"></mat-icon>
