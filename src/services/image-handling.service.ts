@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { wrapText } from 'wraptext.js';
+import { DOCUMENT } from '@angular/common';
 
 const piexifjs = require('./piexif.js');
 
@@ -7,6 +8,7 @@ const piexifjs = require('./piexif.js');
 
 @Injectable({ providedIn: 'root' })
 export class ImageHandlingService {
+    readonly #document = inject(DOCUMENT);
 
     #extraHeightForReasonFooter = 48;
     #canvas!: HTMLCanvasElement;
@@ -44,7 +46,7 @@ export class ImageHandlingService {
             videoWidth,
             videoHeight
         };
-        this.#canvas = document.createElement('canvas');
+        this.#canvas = this.#document.createElement('canvas');
         this.#canvas.width = imageWidth;
         this.#canvas.height = imageHeight + this.#extraHeightForReasonFooter;
         this.#textContext = null;

@@ -4,6 +4,8 @@ import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from 
 import { provideServiceWorker } from '@angular/service-worker';
 
 import { appRoutes } from './app.routes';
+import { provideClientHydration } from '@angular/platform-browser';
+import { providers as windowProviders } from '../services/window';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -19,6 +21,8 @@ export const appConfig: ApplicationConfig = {
         provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000'
-        })
+        }),
+        provideClientHydration(),
+        windowProviders
     ],
 };

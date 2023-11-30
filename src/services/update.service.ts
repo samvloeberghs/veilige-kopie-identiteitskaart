@@ -1,18 +1,21 @@
-import { ApplicationRef, inject, Injectable, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ApplicationRef, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { concat, first, interval } from 'rxjs';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class UpdateService {
     readonly #swUpdate = inject(SwUpdate);
     readonly #applicationRef = inject(ApplicationRef);
-
+    readonly #platformId = inject(PLATFORM_ID);
     readonly currentVersionSignal = signal('local-dev');
     readonly newVersionAvailableSignal = signal(false);
 
     constructor() {
-       this.#checkForUpdates();
-       this.#startPeriodCheckForUpdates();
+        if (isPlatformBrowser(this.#platformId)) {
+            this.#checkForUpdates();
+            this.#startPeriodCheckForUpdates();
+        }
     }
 
     #checkForUpdates(): void {
@@ -26,7 +29,7 @@ export class UpdateService {
                     this.newVersionAvailableSignal.set(true);
                     break;
                 case 'VERSION_INSTALLATION_FAILED':
-                    console.log(`Failed to install app version '${evt.version.hash}': ${evt.error}`);
+                    console.log(`Failed to install app version '${ evt.version.hash }': ${ evt.error }`);
                     break;
             }
         });

@@ -1,6 +1,6 @@
 <div class="container" [class.example-is-mobile]="mobileQuery.matches">
     <mat-toolbar color="primary" class="toolbar" [class.toolbar--is-mobile]="mobileQuery.matches">
-        <button mat-icon-button (click)="sideNav.toggle()">
+        <button mat-icon-button (click)="sideNav.toggle()" aria-label="Open side navigation">
             <mat-icon>menu</mat-icon>
         </button>
         <h1 class="toolbar__title">Veilige Kopie ID Kaart</h1>
@@ -10,7 +10,8 @@
                            [class.sidenav-container--is-mobile]="mobileQuery.matches">
         <mat-sidenav #sideNav mode="over"
                      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56"
-                     class="sidenav">
+                     class="sidenav"
+        id="">
             <mat-nav-list class="sidenav__nav-list">
                 <a mat-list-item routerLink="/" class="center-flex" routerLinkActive="active" ariaCurrentWhenActive="page">
                     <mat-icon aria-hidden="true" fontIcon="home" class="list-item-icon"></mat-icon>

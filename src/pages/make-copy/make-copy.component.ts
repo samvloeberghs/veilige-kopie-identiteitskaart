@@ -2,13 +2,14 @@ import { Component, inject, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { NgIf } from '@angular/common';
+import { DOCUMENT, NgIf } from '@angular/common';
 import { FormControl, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImageHandlingService } from '../../services/image-handling.service';
+import { WINDOW } from '../../services/window';
 
 interface State {
     'front': {
@@ -42,10 +43,13 @@ export default class MakeCopyComponent {
     @ViewChild('reasonNgModel')
     private readonly reasonNgModel: any;
 
-    readonly now = new Date();
+    readonly #document = inject(DOCUMENT);
+    readonly #window = inject(WINDOW);
     readonly #matSnackBar = inject(MatSnackBar);
     readonly #activatedRoute = inject(ActivatedRoute);
     readonly #imageHandlingService = inject(ImageHandlingService);
+
+    readonly now = new Date();
 
     reason = '';
     reasonEmpty = true;
@@ -74,7 +78,7 @@ export default class MakeCopyComponent {
         if (command === 'preview') {
             if ((this.reasonNgModel.control as FormControl).invalid) {
                 (this.reasonNgModel.control as FormControl).markAsTouched();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                this.#window.scrollTo({ top: 0, behavior: 'smooth' });
                 this.#matSnackBar.open('Reden ontbreekt', 'Sluit', {
                     duration: 10000,
                 });
@@ -91,8 +95,8 @@ export default class MakeCopyComponent {
     }
 
     takePicture(side: 'front' | 'back'): void {
-        const player = document.getElementById(`video-${ side }`) as HTMLVideoElement;
-        const video = document.getElementById(`video-${ side }`) as HTMLVideoElement;
+        const player = this.#document.getElementById(`video-${ side }`) as HTMLVideoElement;
+        const video = this.#document.getElementById(`video-${ side }`) as HTMLVideoElement;
         const ratio = 16 / 10;
         const newWidth = video.videoWidth;
         const newHeight = newWidth / ratio;
@@ -120,7 +124,7 @@ export default class MakeCopyComponent {
         // setTimeout is necessary to because the element will
         // only be visible after the next render cycle
         setTimeout(() => {
-            const player = document.getElementById(`video-${ side }`) as HTMLVideoElement;
+            const player = this.#document.getElementById(`video-${ side }`) as HTMLVideoElement;
             const constraints = {
                 video: {
                     advanced: [{
@@ -141,13 +145,13 @@ export default class MakeCopyComponent {
     #createLinkAndDownload(side: 'front' | 'back'): void {
         const objectURL = this.state[side].photoUrl as string;
         const fileName = `${ side }_${ (new Date()).toISOString() }.jpg`;
-        const linkElement = document.createElement('a');
+        const linkElement = this.#document.createElement('a');
         linkElement.href = objectURL;
         linkElement.style.display = 'none';
         linkElement.download = fileName;
         // Using dispatchEvent is necessary as link.click() does not work on the latest firefox
         linkElement.dispatchEvent(
-            new MouseEvent('click', { bubbles: true, cancelable: true, view: window }),
+            new MouseEvent('click', { bubbles: true, cancelable: true, view: this.#window }),
         );
         setTimeout(() => {
             // For Firefox it is necessary to delay revoking the ObjectURL

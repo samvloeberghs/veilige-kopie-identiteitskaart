@@ -6,10 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf } from '@angular/common';
+import { DOCUMENT, NgIf } from '@angular/common';
 import { filter } from 'rxjs';
 import { UpdateService } from '../services/update.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { WINDOW } from '../services/window';
 
 @Component({
     standalone: true,
@@ -24,6 +25,8 @@ export class AppComponent implements OnDestroy {
     readonly #router = inject(Router);
     readonly #updateService = inject(UpdateService);
     readonly #matSnackBar = inject(MatSnackBar);
+    readonly #document = inject(DOCUMENT);
+    readonly #window = inject(WINDOW);
 
     #mobileQueryListener!: () => void;
 
@@ -54,7 +57,7 @@ export class AppComponent implements OnDestroy {
             filter((event) => event instanceof NavigationEnd)
         ).subscribe(() => {
             this.sideNav?.close();
-            window.scrollTo(0,0);
+            this.#window.scrollTo(0,0);
         });
     }
 
@@ -64,7 +67,7 @@ export class AppComponent implements OnDestroy {
             if (newVersionAvailable) {
                 const snackBarRef = this.#matSnackBar.open('Nieuwe versie beschikbaar', 'Vernieuwen');
                 snackBarRef.onAction().subscribe(() => {
-                    document.location.reload();
+                    this.#document.location.reload();
                 });
             }
         });
