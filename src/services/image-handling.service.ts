@@ -64,7 +64,7 @@ export class ImageHandlingService {
         this.#context.fillRect(0, this.#options.imageHeight, this.#options.imageWidth, 48);
         this.#context.fillStyle = '#000000';
         this.#context.font = '400 15px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
-        this.#context.fillText(this.#options.descriptiveText.slice(0, 56), 16, this.#options.imageHeight + 20, this.#options.imageWidth - 32);
+        this.#context.fillText(this.#options.descriptiveText.slice(0, 57), 16, this.#options.imageHeight + 20, this.#options.imageWidth - 32);
         this.#context.fillText(this.#options.descriptiveText.slice(57, 114), 16, this.#options.imageHeight + 40, this.#options.imageWidth - 32);
     }
 

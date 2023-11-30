@@ -54,6 +54,7 @@ export class AppComponent implements OnDestroy {
             filter((event) => event instanceof NavigationEnd)
         ).subscribe(() => {
             this.sideNav?.close();
+            window.scrollTo(0,0);
         });
     }
 

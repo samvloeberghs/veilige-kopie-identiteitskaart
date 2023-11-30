@@ -1,12 +1,24 @@
 import { ApplicationConfig, isDevMode } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { appRoutes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 
+import { appRoutes } from './app.routes';
+
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(appRoutes), provideAnimations(), provideServiceWorker('ngsw-worker.js', {
-        enabled: !isDevMode(),
-        registrationStrategy: 'registerWhenStable:30000'
-    })],
+    providers: [
+        provideRouter(
+            appRoutes,
+            withComponentInputBinding(),
+            withInMemoryScrolling({
+                anchorScrolling: 'enabled',
+                scrollPositionRestoration: 'enabled',
+            }),
+        ),
+        provideAnimations(),
+        provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+        })
+    ],
 };
