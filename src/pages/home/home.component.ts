@@ -30,7 +30,7 @@ export default class HomeComponent implements AfterViewChecked {
     readonly #router = inject(Router);
 
     ngAfterViewChecked() {
-        this.paddingBottom = this.reasonForm.nativeElement.offsetHeight;
+        this.paddingBottom = this.reasonForm.nativeElement.offsetHeight + 16;
     }
 
     handleSubmit(event: Event) {

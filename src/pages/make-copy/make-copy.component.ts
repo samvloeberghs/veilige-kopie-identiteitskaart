@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,17 +15,22 @@ import { combineLatest, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatMenuModule } from '@angular/material/menu';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 interface State {
     'front': {
         showScanPreview: boolean;
+        showScanPreviewLoading: boolean;
         showPhoto: boolean;
         photoUrl?: string;
+        mediaStream?: MediaStream;
     }
     'back': {
         showScanPreview: boolean;
+        showScanPreviewLoading: boolean;
         showPhoto: boolean;
         photoUrl?: string;
+        mediaStream?: MediaStream;
     }
 }
 
@@ -41,7 +46,8 @@ interface State {
         MatFormFieldModule,
         MatInputModule,
         MatStepperModule,
-        MatMenuModule
+        MatMenuModule,
+        MatProgressSpinnerModule,
     ],
     providers: [
         {
@@ -52,7 +58,7 @@ interface State {
     templateUrl: './make-copy.component.html',
     styleUrl: './make-copy.component.scss',
 })
-export default class MakeCopyComponent implements AfterViewInit {
+export default class MakeCopyComponent implements AfterViewInit, OnDestroy {
     @ViewChild('reasonNgModel')
     private readonly reasonNgModel!: NgModel;
 
@@ -73,10 +79,12 @@ export default class MakeCopyComponent implements AfterViewInit {
     state: State = {
         'front': {
             showScanPreview: false,
+            showScanPreviewLoading: true,
             showPhoto: false,
         },
         'back': {
             showScanPreview: false,
+            showScanPreviewLoading: true,
             showPhoto: false,
         }
     }
@@ -89,11 +97,18 @@ export default class MakeCopyComponent implements AfterViewInit {
         this.#viewReady.next();
     }
 
+    ngOnDestroy(): void {
+        this.state['front'].mediaStream?.getTracks().forEach((track) => track.stop());
+        this.state['back'].mediaStream?.getTracks().forEach((track) => track.stop());
+    }
+
     handleScan(side: 'front' | 'back', command: 'cancel' | 'preview' | 'download'): void {
         if (command === 'cancel') {
             this.state[side].showPhoto = false;
             this.state[side].showScanPreview = false;
             this.state[side].photoUrl = undefined;
+            this.state[side].photoUrl = undefined;
+            this.state[side].mediaStream?.getTracks().forEach((track) => track.stop());
         }
 
         if (command === 'preview') {
@@ -111,11 +126,17 @@ export default class MakeCopyComponent implements AfterViewInit {
         }
 
         if (command === 'download') {
-            this.#createLinkAndDownload(side);
+            const objectURL = this.state[side].photoUrl as string;
+            const fileName = `${ side }_${ (new Date()).toISOString() }.jpg`;
+            this.#createLinkAndDownload(objectURL, fileName);
         }
     }
 
     takePicture(side: 'front' | 'back'): void {
+        if (!this.state[side].mediaStream) {
+            return;
+        }
+
         const player = this.#document.getElementById(`video-${ side }`) as HTMLVideoElement;
         const video = this.#document.getElementById(`video-${ side }`) as HTMLVideoElement;
         const ratio = 16 / 10;
@@ -136,12 +157,32 @@ export default class MakeCopyComponent implements AfterViewInit {
 
         // save the state
         this.state[side].photoUrl = this.#imageHandlingService.getDataURL();
-        // this.state[side].photoUrl = canvas.toDataURL('image/jpeg');
         this.state[side].showPhoto = true;
         this.state[side].showScanPreview = false;
+        this.state[side].mediaStream?.getTracks().forEach((track) => track.stop());
+    }
+
+    downloadCombo(type: 'image' | 'pdf'): void {
+        const objectURLFront = this.state['front'].photoUrl as string;
+        const objectURLBack = this.state['back'].photoUrl as string;
+        const fileName = `${ (new Date()).toISOString() }.jpg`;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 640;
+        canvas.height = 896;
+        const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+        const imageFront = new Image();
+        imageFront.src = objectURLFront;
+        ctx.drawImage(imageFront, 0, 0, 640, 448);
+        const imageBack = new Image();
+        imageBack.src = objectURLBack;
+        ctx.drawImage(imageBack, 0, 448, 640, 448);
+        this.#createLinkAndDownload(canvas.toDataURL('image/jpeg'), fileName);
     }
 
     #showPreview(side: 'front' | 'back'): void {
+        this.state[side].showScanPreviewLoading = true;
         // setTimeout is necessary to because the element will
         // only be visible after the next render cycle
         setTimeout(() => {
@@ -158,14 +199,14 @@ export default class MakeCopyComponent implements AfterViewInit {
             };
 
             navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+                this.state[side].mediaStream = stream;
                 player.srcObject = stream;
+                this.state[side].showScanPreviewLoading = false;
             });
         });
     }
 
-    #createLinkAndDownload(side: 'front' | 'back'): void {
-        const objectURL = this.state[side].photoUrl as string;
-        const fileName = `${ side }_${ (new Date()).toISOString() }.jpg`;
+    #createLinkAndDownload(objectURL: string, fileName: string): void {
         const linkElement = this.#document.createElement('a');
         linkElement.href = objectURL;
         linkElement.style.display = 'none';
@@ -180,6 +221,7 @@ export default class MakeCopyComponent implements AfterViewInit {
             linkElement.remove();
         }, 100);
     }
+
 
     #listenToSearchParams(): void {
         // TODO: untilDestroyed

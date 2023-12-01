@@ -41,21 +41,14 @@
     <mat-step label="Kopie identiteitskaart" state="scan">
         <div class="scan-body">
             <div class="scan-body__part">
-                <div class="make-copy__sub-title-wrapper">
-                    <h3 class="make-copy__sub-title">Voorkant document</h3>
-                    <button type="button" mat-stroked-button color="accent" (click)="handleScan('front', 'preview')"
-                            *ngIf="state.front.showPhoto">
-                        <mat-icon>document_scanner</mat-icon>
-                        Opnieuw
-                    </button>
-                    <button type="button" mat-raised-button color="accent" class="download-action"
-                            *ngIf="state.front.showScanPreview || !state.front.showPhoto"
-                            [disabled]="!state.front.showScanPreview"
-                            (click)="takePicture('front')">
-                        Foto nemen
-                        <mat-icon aria-hidden="true" fontIcon="save" class="list-item-icon"></mat-icon>
-                    </button>
-                </div>
+                <h3 class="make-copy__sub-title">Voorkant document</h3>
+                <!--
+                <button type="button" mat-stroked-button color="accent" (click)="handleScan('front', 'preview')"
+                        *ngIf="state.front.showPhoto">
+                    <mat-icon>document_scanner</mat-icon>
+                    Opnieuw
+                </button>
+                -->
 
                 <div class="frame">
                     <button type="button" class="placeholder" (click)="handleScan('front', 'preview')"
@@ -64,17 +57,33 @@
                         <span class="placeholder__text">Klik / duw hier om de voorkant van uw identiteitskaart (of ander document) te scannen</span>
                     </button>
                     <div class="video-container" id="video-container-front" *ngIf="state.front.showScanPreview">
-                        <video id="video-front" class="video" autoplay webkit-playsinline playsinline></video>
+                        <video id="video-front" class="video-container__video" autoplay webkit-playsinline
+                               playsinline></video>
+                        <button type="button" aria-label="Neem scan voorkant"
+                                (click)="takePicture('front')"
+                                class="video-container__take-picture"
+                                *ngIf="!state.front.showScanPreviewLoading">
+                            <span class="video-container__take-picture-icon-wrapper">
+                                <mat-icon>camera</mat-icon>
+                            </span>
+                        </button>
+                        <mat-progress-spinner
+                                *ngIf="state.front.showScanPreviewLoading"
+                                color="primary"
+                                mode="indeterminate"
+                                [diameter]="32"
+                                class="video-container__preview-loading">
+                        </mat-progress-spinner>
                     </div>
                     <div class="photo-container" *ngIf="state.front.showPhoto">
-                        <img [src]="state.front.photoUrl" class="photo">
+                        <img [src]="state.front.photoUrl" class="photo-container__photo">
                         <button type="button" mat-mini-fab color="warn" aria-label="Scan voorkant annuleren"
                                 (click)="handleScan('front', 'cancel')"
-                                class="photo-cancel">
+                                class="photo-container__cancel">
                             <mat-icon>close_small</mat-icon>
                         </button>
                         <button type="button" mat-mini-fab color="primary" aria-label="Scan voorkant downloaden"
-                                class="photo-download"
+                                class="photo-container__download"
                                 [matMenuTriggerFor]="downloadBackMenu">
                             <mat-icon>download</mat-icon>
                         </button>
@@ -92,21 +101,14 @@
                 </div>
             </div>
             <div class="scan-body__part">
-                <div class="make-copy__sub-title-wrapper">
-                    <h3 class="make-copy__sub-title">Achterkant document</h3>
-                    <button type="button" mat-stroked-button color="accent" (click)="handleScan('back', 'preview')"
-                            *ngIf="state.back.showPhoto">
-                        <mat-icon>document_scanner</mat-icon>
-                        Opnieuw
-                    </button>
-                    <button type="button" mat-raised-button color="accent" class="download-action"
-                            *ngIf="state.back.showScanPreview || !state.back.showPhoto"
-                            [disabled]="!state.back.showScanPreview"
-                            (click)="takePicture('back')">
-                        Foto nemen
-                        <mat-icon aria-hidden="true" fontIcon="save" class="list-item-icon"></mat-icon>
-                    </button>
-                </div>
+                <h3 class="make-copy__sub-title">Achterkant document</h3>
+                <!--
+                <button type="button" mat-stroked-button color="accent" (click)="handleScan('back', 'preview')"
+                        *ngIf="state.back.showPhoto">
+                    <mat-icon>document_scanner</mat-icon>
+                    Opnieuw
+                </button>
+                -->
 
                 <div class="frame">
                     <button type="button" class="placeholder" (click)="handleScan('back', 'preview')"
@@ -115,17 +117,35 @@
                         <span class="placeholder__text">Klik / duw hier om de achterkant van uw identiteitskaart (of ander document) te scannen</span>
                     </button>
                     <div class="video-container" id="video-container-back" *ngIf="state.back.showScanPreview">
-                        <video id="video-back" class="video" autoplay webkit-playsinline playsinline></video>
+                        <video id="video-back" class="video-container__video" autoplay webkit-playsinline
+                               playsinline></video>
+                        <button type="button" aria-label="Neem scan achterkant"
+                                (click)="takePicture('back')"
+                                class="video-container__take-picture" *ngIf="!state.back.showScanPreviewLoading">
+                            <span class="video-container__take-picture-icon-wrapper">
+                                <mat-icon>camera</mat-icon>
+                            </span>
+                        </button>
+                        <mat-icon *ngIf="state.back.showScanPreviewLoading" class="video-container__preview-loading">
+                            loading
+                        </mat-icon>
+                        <mat-progress-spinner
+                                *ngIf="state.back.showScanPreviewLoading"
+                                color="primary"
+                                mode="indeterminate"
+                                [diameter]="32"
+                                class="video-container__preview-loading">
+                        </mat-progress-spinner>
                     </div>
                     <div class="photo-container" *ngIf="state.back.showPhoto">
-                        <img [src]="state.back.photoUrl" class="photo">
+                        <img [src]="state.back.photoUrl" class="photo-container__photo">
                         <button type="button" mat-mini-fab color="warn" aria-label="Scan achterkant annuleren"
                                 (click)="handleScan('back', 'cancel')"
-                                class="photo-cancel">
+                                class="photo-container__cancel">
                             <mat-icon>close_small</mat-icon>
                         </button>
                         <button type="button" mat-mini-fab color="primary" aria-label="Scan achterkant downloaden"
-                                class="photo-download"
+                                class="photo-container__download"
                                 [matMenuTriggerFor]="downloadBackMenu">
                             <mat-icon>download</mat-icon>
                         </button>
@@ -145,17 +165,17 @@
         </div>
         <div class="stepper__actions">
             <button mat-raised-button matStepperPrevious>Back</button>
-            <!--
             <button mat-raised-button color="primary" *ngIf="state.back.photoUrl && state.front.photoUrl"
                     [matMenuTriggerFor]="downloadComboMenu">Download beide scans
             </button>
             <mat-menu #downloadComboMenu="matMenu">
-                <button type="button" mat-menu-item (click)="handleScan('back', 'download')">Download als JPEG
+                <button type="button" mat-menu-item (click)="downloadCombo('image')">Download als JPEG
                     afbeelding
                 </button>
+                <!--
                 <button type="button" mat-menu-item (click)="handleScan('back', 'download')">Download als PDF</button>
+                -->
             </mat-menu>
-            -->
         </div>
     </mat-step>
 
@@ -167,3 +187,4 @@
         <mat-icon>document_scanner</mat-icon>
     </ng-template>
 </mat-horizontal-stepper>
+

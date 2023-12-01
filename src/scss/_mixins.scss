@@ -13,6 +13,7 @@
     font: mat.get-theme-typography($theme, headline-6, font);
     letter-spacing: mat.get-theme-typography($theme, headline-6, letter-spacing);
     margin: 0 0 $gridunit 0;
+    font-weight: 400;
 
     &--error {
       color: var(--mat-form-field-error-text-color);

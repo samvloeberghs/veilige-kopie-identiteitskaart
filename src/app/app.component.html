@@ -1,56 +1,62 @@
-<div class="container">
-    <mat-toolbar color="primary" class="toolbar">
-        <div class="toolbar__left">
-            <button mat-icon-button (click)="sideNav.toggle()" aria-label="Open side navigation">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <h1 class="toolbar__title">Veilige Kopie ID Kaart</h1>
+<mat-toolbar color="primary" class="toolbar">
+    <div class="toolbar__left">
+        <button mat-icon-button (click)="sideNav.toggle()" aria-label="Open side navigation">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <h1 class="toolbar__title">Veilige Kopie ID Kaart</h1>
+    </div>
+    <a routerLink="/kopie-maken" matRipple>
+        <img src="assets/icons/icon_dark.svg" alt="Logo" class="toolbar__logo">
+    </a>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container"
+                       [style.height]="'calc(100%  - ' + (mobileQuery.matches ? 56 : 64)+'px)'">
+    <mat-sidenav #sideNav mode="over" [fixedInViewport]="true" [fixedTopGap]="mobileQuery.matches ? 56 : 64"
+                 class="sidenav">
+        <mat-nav-list class="sidenav__nav-list">
+            <a mat-list-item routerLink="/" class="center-flex" routerLinkActive="sidenav__nav-list-item--active"
+               [routerLinkActiveOptions]="{exact: true}"
+               ariaCurrentWhenActive="page">
+                <mat-icon aria-hidden="true" fontIcon="home" class="sidenav__list-item-icon"></mat-icon>
+                Startpagina
+            </a>
+            <a mat-list-item routerLink="/kopie-maken" class="center-flex"
+               routerLinkActive="sidenav__nav-list-item--active"
+               [routerLinkActiveOptions]="{exact: true}"
+               ariaCurrentWhenActive="page">
+                <mat-icon aria-hidden="true" fontIcon="document_scanner" class="sidenav__list-item-icon"></mat-icon>
+                Kopie maken van ID kaart
+            </a>
+            <a mat-list-item routerLink="/over-deze-applicatie" class="center-flex"
+               routerLinkActive="sidenav__nav-list-item--active"
+               [routerLinkActiveOptions]="{exact: true}"
+               ariaCurrentWhenActive="page">
+                <mat-icon aria-hidden="true" fontIcon="info" class="sidenav__list-item-icon"></mat-icon>
+                Over deze applicatie
+            </a>
+            <a mat-list-item routerLink="/disclaimer-privacy-policy" class="center-flex"
+               routerLinkActive="sidenav__nav-list-item--active"
+               [routerLinkActiveOptions]="{exact: true}"
+               ariaCurrentWhenActive="page">
+                <mat-icon aria-hidden="true" fontIcon="shield_with_heart" class="sidenav__list-item-icon"></mat-icon>
+                Disclaimer & Privacy Policy
+            </a>
+        </mat-nav-list>
+        <div class="sidenav__version">
+            Version: <strong>{{currentVersionSignal()}}</strong>
         </div>
-        <a routerLink="/kopie-maken" matRipple>
-            <img src="assets/icons/icon_dark.svg" alt="Logo" class="toolbar__logo">
-        </a>
-    </mat-toolbar>
+    </mat-sidenav>
 
-    <mat-sidenav-container class="sidenav-container">
-        <mat-sidenav #sideNav mode="over" [fixedInViewport]="true" [fixedTopGap]="mobileQuery.matches ? 56 : 64"
-                     class="sidenav">
-            <mat-nav-list class="sidenav__nav-list">
-                <a mat-list-item routerLink="/" class="center-flex" routerLinkActive="active"
-                   ariaCurrentWhenActive="page">
-                    <mat-icon aria-hidden="true" fontIcon="home" class="list-item-icon"></mat-icon>
-                    Startpagina
-                </a>
-                <a mat-list-item routerLink="/kopie-maken" class="center-flex" routerLinkActive="active"
-                   ariaCurrentWhenActive="page">
-                    <mat-icon aria-hidden="true" fontIcon="document_scanner" class="list-item-icon"></mat-icon>
-                    Kopie maken van ID kaart
-                </a>
-                <a mat-list-item routerLink="/over-deze-applicatie" class="center-flex" routerLinkActive="active"
-                   ariaCurrentWhenActive="page">
-                    <mat-icon aria-hidden="true" fontIcon="info" class="list-item-icon"></mat-icon>
-                    Over deze applicatie
-                </a>
-                <a mat-list-item routerLink="/disclaimer-privacy-policy" class="center-flex" routerLinkActive="active"
-                   ariaCurrentWhenActive="page">
-                    <mat-icon aria-hidden="true" fontIcon="shield_with_heart" class="list-item-icon"></mat-icon>
-                    Disclaimer & Privacy Policy
-                </a>
-            </mat-nav-list>
-            <div class="sidenav__version">
-                Version: <strong>{{currentVersionSignal()}}</strong>
-            </div>
-        </mat-sidenav>
+    <mat-sidenav-content>
+        <main>
+            <router-outlet></router-outlet>
+        </main>
+        <footer>
+            <a class="link" routerLink="/over-deze-applicatie">Over deze applicatie</a>
+            |
+            <a class="link" routerLink="/disclaimer-privacy-policy">Disclaimer & privacy policy</a>
+        </footer>
 
-        <mat-sidenav-content>
-            <main>
-                <router-outlet></router-outlet>
-            </main>
-            <footer class="footer-body">
-                <a class="link" routerLink="/over-deze-applicatie">Over deze applicatie</a>
-                |
-                <a class="link" routerLink="/disclaimer-privacy-policy">Disclaimer & privacy policy</a>
-            </footer>
-
-        </mat-sidenav-content>
-    </mat-sidenav-container>
-</div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,13 +1,10 @@
-$gridunit: 8px;
+@import '../scss/variables';
 
-.container {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+:host {
+  display: block;
+  position: relative;
+  height: 100%;
+  overflow: auto;
 }
 
 .toolbar {
@@ -16,6 +13,7 @@ $gridunit: 8px;
   align-items: center;
   position: fixed;
   z-index: 2;
+  top: 0;
 
   &__title {
     margin-left: $gridunit;
@@ -41,11 +39,6 @@ $gridunit: 8px;
   margin-top: $gridunit * 7;
 }
 
-.list-item-icon {
-  vertical-align: middle;
-  margin-right: $gridunit * 2;
-}
-
 .sidenav {
   display: flex;
   justify-content: space-between;
@@ -55,6 +48,19 @@ $gridunit: 8px;
   &__nav-list {
     padding-top: 0;
     padding-bottom: 0;
+  }
+
+  &__list-item-icon {
+    vertical-align: middle;
+    margin-right: $gridunit * 2;
+  }
+
+  &__nav-list-item--active {
+    background: #eee;
+  }
+
+  &__nav-list-item--active &__list-item-icon {
+    color: var(--mat-stepper-header-selected-state-icon-background-color);
   }
 
   &__version {
@@ -70,8 +76,15 @@ $gridunit: 8px;
 
 }
 
-.footer-body {
+main {
+  padding: $gridunit * 2.5 0 $gridunit * 5 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+footer {
   position: fixed;
+  z-index: 1000;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -84,10 +97,4 @@ $gridunit: 8px;
   text-align: center;
   background: white;
   box-sizing: border-box;
-}
-
-main {
-  padding: $gridunit * 3 0 $gridunit * 5 0;
-  max-width: 800px;
-  margin: 0 auto;
 }

@@ -30,13 +30,13 @@
         <li>Je downloadt de scans en gebruikt deze ter verificatie van uw identiteit bij de relevant service.</li>
     </ol>
 
-    <form class="reason-body" novalidate #reasonForm (submit)="handleSubmit($event)">
+    <form class="reason" novalidate #reasonForm (submit)="handleSubmit($event)">
         <h3 class="home__sub-title"><label for="reden">Ga meteen van start</label></h3>
 
-        <label class="home__text home__label" for="reden">
+        <label class="home__text reason__label" for="reden">
             Begin met het opgeven van de reden voor het maken van de kopie:
         </label>
-        <mat-form-field class="reason-body__field">
+        <mat-form-field class="reason__field">
         <textarea matInput id="reden"
                   name="reden"
                   [(ngModel)]="reason"
