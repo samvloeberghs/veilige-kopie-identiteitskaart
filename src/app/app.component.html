@@ -1,31 +1,37 @@
-<div class="container" [class.example-is-mobile]="mobileQuery.matches">
-    <mat-toolbar color="primary" class="toolbar" [class.toolbar--is-mobile]="mobileQuery.matches">
-        <button mat-icon-button (click)="sideNav.toggle()" aria-label="Open side navigation">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <h1 class="toolbar__title">Veilige Kopie ID Kaart</h1>
+<div class="container">
+    <mat-toolbar color="primary" class="toolbar">
+        <div class="toolbar__left">
+            <button mat-icon-button (click)="sideNav.toggle()" aria-label="Open side navigation">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <h1 class="toolbar__title">Veilige Kopie ID Kaart</h1>
+        </div>
+        <a routerLink="/kopie-maken" matRipple>
+            <img src="assets/icons/icon_dark.svg" alt="Logo" class="toolbar__logo">
+        </a>
     </mat-toolbar>
 
-    <mat-sidenav-container class="sidenav-container"
-                           [class.sidenav-container--is-mobile]="mobileQuery.matches">
-        <mat-sidenav #sideNav mode="over"
-                     [fixedInViewport]="mobileQuery.matches" fixedTopGap="56"
-                     class="sidenav"
-        id="">
+    <mat-sidenav-container class="sidenav-container">
+        <mat-sidenav #sideNav mode="over" [fixedInViewport]="true" [fixedTopGap]="mobileQuery.matches ? 56 : 64"
+                     class="sidenav">
             <mat-nav-list class="sidenav__nav-list">
-                <a mat-list-item routerLink="/" class="center-flex" routerLinkActive="active" ariaCurrentWhenActive="page">
+                <a mat-list-item routerLink="/" class="center-flex" routerLinkActive="active"
+                   ariaCurrentWhenActive="page">
                     <mat-icon aria-hidden="true" fontIcon="home" class="list-item-icon"></mat-icon>
                     Startpagina
                 </a>
-                <a mat-list-item routerLink="/kopie-maken" class="center-flex" routerLinkActive="active" ariaCurrentWhenActive="page">
+                <a mat-list-item routerLink="/kopie-maken" class="center-flex" routerLinkActive="active"
+                   ariaCurrentWhenActive="page">
                     <mat-icon aria-hidden="true" fontIcon="document_scanner" class="list-item-icon"></mat-icon>
                     Kopie maken van ID kaart
                 </a>
-                <a mat-list-item routerLink="/over-deze-applicatie" class="center-flex" routerLinkActive="active" ariaCurrentWhenActive="page">
+                <a mat-list-item routerLink="/over-deze-applicatie" class="center-flex" routerLinkActive="active"
+                   ariaCurrentWhenActive="page">
                     <mat-icon aria-hidden="true" fontIcon="info" class="list-item-icon"></mat-icon>
                     Over deze applicatie
                 </a>
-                <a mat-list-item routerLink="/disclaimer-privacy-policy" class="center-flex" routerLinkActive="active" ariaCurrentWhenActive="page">
+                <a mat-list-item routerLink="/disclaimer-privacy-policy" class="center-flex" routerLinkActive="active"
+                   ariaCurrentWhenActive="page">
                     <mat-icon aria-hidden="true" fontIcon="shield_with_heart" class="list-item-icon"></mat-icon>
                     Disclaimer & Privacy Policy
                 </a>
@@ -36,20 +42,14 @@
         </mat-sidenav>
 
         <mat-sidenav-content>
-            <div class="body">
+            <main>
                 <router-outlet></router-outlet>
-            </div>
-
-            <p class="footer-body">
-                Deze handige tool werd ontwikkeld door <a class="link" href="https://samvloeberghs.be" target="_blank"
-                                                          rel="noopener">Sam
-                Vloeberghs</a>. De volledige broncode kan worden ingekeken op <a
-                    href="https://github.com/samvloeberghs/veilige-kopie-identiteitskaart" class="link"
-                    target="_blank"
-                    rel="noopener">Github</a>.
-                <strong>Uw gegevens zijn veilig</strong>: Er worden geen cookies gebruikt en al uw data wordt lokaal
-                verwerkt in de applicatie waardoor er niets wordt verstuurd naar een server. Lees meer in de <a class="link" href="/disclaimer-privacy-policy">disclaimer & privacy policy</a>.
-            </p>
+            </main>
+            <footer class="footer-body">
+                <a class="link" routerLink="/over-deze-applicatie">Over deze applicatie</a>
+                |
+                <a class="link" routerLink="/disclaimer-privacy-policy">Disclaimer & privacy policy</a>
+            </footer>
 
         </mat-sidenav-content>
     </mat-sidenav-container>

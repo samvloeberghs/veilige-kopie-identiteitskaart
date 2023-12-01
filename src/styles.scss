@@ -4,18 +4,13 @@
 @import './scss/variables';
 
 html, body {
+  overscroll-behavior: none;
   height: 100%;
 }
 
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-.sub-title-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .alert {
@@ -46,6 +41,38 @@ body {
   &__description {
     flex: 1;
     margin: 0;
+  }
+}
+
+a.link {
+  color: #444;
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+
+  &:hover {
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+  }
+}
+
+p {
+  margin: 0 0 $gridunit * 2 0;
+}
+
+ol, ul {
+  margin: 0 0 $gridunit * 2 0;
+
+  li {
+    margin-bottom: $gridunit;
+  }
+}
+
+mat-horizontal-stepper {
+  --mat-stepper-container-color: transparent;
+
+  .mat-horizontal-stepper-header-container {
+    background: #fff;
+    margin-bottom: $gridunit * 2;
   }
 }
 

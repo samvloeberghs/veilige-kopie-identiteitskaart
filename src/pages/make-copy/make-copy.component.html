@@ -1,16 +1,12 @@
-<h2 class="make-copy__title">Kopie maken</h2>
-<div class="alert alert--info">
-    <mat-icon class="alert__icon">info</mat-icon>
-    <p class="alert__description">
-        <strong>Uw gegevens zijn veilig</strong>: Er worden geen cookies gebruikt en al uw data wordt lokaal
-        verwerkt in de applicatie waardoor er niets wordt verstuurd naar een server.
-    </p>
+<div class="make-copy">
+    <h2 class="make-copy__title">Kopie maken</h2>
 </div>
-<div class="reason-body">
-    <h3 class="make-copy__sub-title"
-        [class.make-copy__sub-title--error]="reasonNgModel.invalid && (reasonNgModel.dirty || reasonNgModel.touched)">
-        <label for="reason">Reden voor de kopie</label></h3>
-    <mat-form-field class="reason-body__field">
+<mat-horizontal-stepper #stepper [linear]="true" class="stepper" [@.disabled]="true">
+    <mat-step label="Reden" [completed]="reasonNgModel.valid" state="reason">
+        <h3 class="make-copy__sub-title"
+            [class.make-copy__sub-title--error]="reasonNgModel.invalid && (reasonNgModel.dirty || reasonNgModel.touched)">
+            <label for="reason">Reden voor de kopie</label></h3>
+        <mat-form-field class="reason-body__field">
         <textarea matInput id="reason" [(ngModel)]="reason"
                   maxlength="75"
                   minlength="10"
@@ -18,124 +14,156 @@
                   placeholder="Bijvoorbeeld: &quot;Openen van rekening bij ING bank in januari 2024&quot;. Opgelet: hoe specifieker hoe beter!"
                   rows="3"
                   #reasonNgModel="ngModel"></textarea>
-        <mat-hint>Min 10, max 75 karakters.</mat-hint>
-        <ng-container *ngIf="reasonNgModel.invalid && (reasonNgModel.dirty || reasonNgModel.touched)">
-            <mat-error *ngIf="reasonNgModel.hasError('required')">Reden is <strong>verplicht</strong> (10-75 karakters)
-            </mat-error>
-            <mat-error *ngIf="reasonNgModel.hasError('minlength')">Reden moet minstens 10 karakters bevatten</mat-error>
-            <mat-error *ngIf="reasonNgModel.hasError('maxlength')">Reden mag maximaal 75 karakters bevatten</mat-error>
-        </ng-container>
-    </mat-form-field>
-</div>
-<div class="scan-body">
-    <div class="scan-body__part">
-        <h3 class="make-copy__sub-title">Voorkant document</h3>
+            <mat-hint>Min 10, max 75 karakters.</mat-hint>
+            <ng-container *ngIf="reasonNgModel.invalid && (reasonNgModel.dirty || reasonNgModel.touched)">
+                <mat-error *ngIf="reasonNgModel.hasError('required')">Reden is <strong>verplicht</strong> (10-75
+                    karakters)
+                </mat-error>
+                <mat-error *ngIf="reasonNgModel.hasError('minlength')">Reden moet minstens 10 karakters bevatten
+                </mat-error>
+                <mat-error *ngIf="reasonNgModel.hasError('maxlength')">Reden mag maximaal 75 karakters bevatten
+                </mat-error>
+            </ng-container>
+        </mat-form-field>
 
-        <div class="frame">
-            <button type="button" class="placeholder" (click)="handleScan('front', 'preview')"
-                    *ngIf="!state.front.showScanPreview && !state.front.showPhoto">
-                <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
-                <span class="placeholder__text">Klik / duw hier om de voorkant van uw identiteitskaart (of ander document) te scannen</span>
-            </button>
-            <div class="video-container" id="video-container-front" *ngIf="state.front.showScanPreview">
-                <video id="video-front" class="video" autoplay webkit-playsinline playsinline></video>
-            </div>
-            <div class="photo-container" *ngIf="state.front.showPhoto">
-                <img [src]="state.front.photoUrl" class="photo">
-            </div>
-            <div class="reden-overlay">
-                <div *ngIf="reasonNgModel.valid"><strong>({{now.toLocaleDateString()}} - Voorkant) - Reden kopie:</strong> {{reason}}</div>
-            </div>
+        <div class="stepper__actions stepper__actions--first">
+            <button mat-raised-button color="primary" matStepperNext [disabled]="reasonNgModel.invalid">Next</button>
         </div>
 
-        <div class="action-wrapper">
-            <button type="button" mat-raised-button color="danger" (click)="handleScan('front', 'preview')"
-                    *ngIf="state.front.showPhoto">
-                <mat-icon>document_scanner</mat-icon>
-                Opnieuw
-            </button>
-            <button type="button" mat-raised-button color="warn" (click)="handleScan('front', 'cancel')"
-                    *ngIf="state.front.showScanPreview">
-                <mat-icon>close_small</mat-icon>
-                Annuleren
-            </button>
-            <button type="button" mat-raised-button color="primary" class="download-action"
-                    *ngIf="state.front.showPhoto"
-                    (click)="handleScan('front', 'download')">
-                Download
-                <mat-icon aria-hidden="true" fontIcon="download" class="list-item-icon"></mat-icon>
-            </button>
-            <button type="button" mat-raised-button color="primary" class="download-action"
-                    *ngIf="state.front.showScanPreview || !state.front.showPhoto"
-                    [disabled]="!state.front.showScanPreview"
-                    (click)="takePicture('front')">
-                Foto nemen
-                <mat-icon aria-hidden="true" fontIcon="save" class="list-item-icon"></mat-icon>
-            </button>
+        <div class="alert alert--info make-copy__alert">
+            <mat-icon class="alert__icon">info</mat-icon>
+            <p class="alert__description">
+                <strong>Uw gegevens zijn veilig</strong>: Er worden geen cookies gebruikt en al uw data wordt lokaal
+                verwerkt in de applicatie waardoor er niets wordt verstuurd naar een server.
+            </p>
         </div>
-    </div>
+    </mat-step>
+    <mat-step label="Kopie identiteitskaart" state="scan">
+        <div class="scan-body">
+            <div class="scan-body__part">
+                <div class="make-copy__sub-title-wrapper">
+                    <h3 class="make-copy__sub-title">Voorkant document</h3>
+                    <button type="button" mat-stroked-button color="accent" (click)="handleScan('front', 'preview')"
+                            *ngIf="state.front.showPhoto">
+                        <mat-icon>document_scanner</mat-icon>
+                        Opnieuw
+                    </button>
+                    <button type="button" mat-raised-button color="accent" class="download-action"
+                            *ngIf="state.front.showScanPreview || !state.front.showPhoto"
+                            [disabled]="!state.front.showScanPreview"
+                            (click)="takePicture('front')">
+                        Foto nemen
+                        <mat-icon aria-hidden="true" fontIcon="save" class="list-item-icon"></mat-icon>
+                    </button>
+                </div>
 
-    <mat-divider class="scan-body__divider"></mat-divider>
-
-    <div class="scan-body__part">
-        <h3 class="make-copy__sub-title">Achterkant document</h3>
-
-        <div class="frame">
-            <button type="button" class="placeholder" (click)="handleScan('back', 'preview')"
-                    *ngIf="!state.back.showScanPreview && !state.back.showPhoto">
-                <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
-                <span class="placeholder__text">Klik / duw hier om de achterkant van uw identiteitskaart (of ander document) te scannen</span>
-            </button>
-            <div class="video-container" id="video-container-back" *ngIf="state.back.showScanPreview">
-                <video id="video-back" class="video" autoplay webkit-playsinline playsinline></video>
+                <div class="frame">
+                    <button type="button" class="placeholder" (click)="handleScan('front', 'preview')"
+                            *ngIf="!state.front.showScanPreview && !state.front.showPhoto">
+                        <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
+                        <span class="placeholder__text">Klik / duw hier om de voorkant van uw identiteitskaart (of ander document) te scannen</span>
+                    </button>
+                    <div class="video-container" id="video-container-front" *ngIf="state.front.showScanPreview">
+                        <video id="video-front" class="video" autoplay webkit-playsinline playsinline></video>
+                    </div>
+                    <div class="photo-container" *ngIf="state.front.showPhoto">
+                        <img [src]="state.front.photoUrl" class="photo">
+                        <button type="button" mat-mini-fab color="warn" aria-label="Scan voorkant annuleren"
+                                (click)="handleScan('front', 'cancel')"
+                                class="photo-cancel">
+                            <mat-icon>close_small</mat-icon>
+                        </button>
+                        <button type="button" mat-mini-fab color="primary" aria-label="Scan voorkant downloaden"
+                                class="photo-download"
+                                [matMenuTriggerFor]="downloadBackMenu">
+                            <mat-icon>download</mat-icon>
+                        </button>
+                        <mat-menu #downloadBackMenu="matMenu">
+                            <button type="button" mat-menu-item (click)="handleScan('front', 'download')">Download als
+                                JPEG afbeelding
+                            </button>
+                            <!--
+                            <button type="button" mat-menu-item (click)="handleScan('front', 'download')">Download als
+                                PDF
+                            </button>
+                            -->
+                        </mat-menu>
+                    </div>
+                </div>
             </div>
-            <div class="photo-container" *ngIf="state.back.showPhoto">
-                <img [src]="state.back.photoUrl" class="photo">
-            </div>
-            <div class="reden-overlay">
-                <div *ngIf="reasonNgModel.valid"><strong>({{now.toLocaleDateString()}} - Achterkant) - Reden kopie:</strong> {{reason}}</div>
+            <div class="scan-body__part">
+                <div class="make-copy__sub-title-wrapper">
+                    <h3 class="make-copy__sub-title">Achterkant document</h3>
+                    <button type="button" mat-stroked-button color="accent" (click)="handleScan('back', 'preview')"
+                            *ngIf="state.back.showPhoto">
+                        <mat-icon>document_scanner</mat-icon>
+                        Opnieuw
+                    </button>
+                    <button type="button" mat-raised-button color="accent" class="download-action"
+                            *ngIf="state.back.showScanPreview || !state.back.showPhoto"
+                            [disabled]="!state.back.showScanPreview"
+                            (click)="takePicture('back')">
+                        Foto nemen
+                        <mat-icon aria-hidden="true" fontIcon="save" class="list-item-icon"></mat-icon>
+                    </button>
+                </div>
+
+                <div class="frame">
+                    <button type="button" class="placeholder" (click)="handleScan('back', 'preview')"
+                            *ngIf="!state.back.showScanPreview && !state.back.showPhoto">
+                        <mat-icon class="placeholder__icon" color="accent">document_scanner</mat-icon>
+                        <span class="placeholder__text">Klik / duw hier om de achterkant van uw identiteitskaart (of ander document) te scannen</span>
+                    </button>
+                    <div class="video-container" id="video-container-back" *ngIf="state.back.showScanPreview">
+                        <video id="video-back" class="video" autoplay webkit-playsinline playsinline></video>
+                    </div>
+                    <div class="photo-container" *ngIf="state.back.showPhoto">
+                        <img [src]="state.back.photoUrl" class="photo">
+                        <button type="button" mat-mini-fab color="warn" aria-label="Scan achterkant annuleren"
+                                (click)="handleScan('back', 'cancel')"
+                                class="photo-cancel">
+                            <mat-icon>close_small</mat-icon>
+                        </button>
+                        <button type="button" mat-mini-fab color="primary" aria-label="Scan achterkant downloaden"
+                                class="photo-download"
+                                [matMenuTriggerFor]="downloadBackMenu">
+                            <mat-icon>download</mat-icon>
+                        </button>
+                        <mat-menu #downloadBackMenu="matMenu">
+                            <button type="button" mat-menu-item (click)="handleScan('back', 'download')">Download als
+                                JPEG afbeelding
+                            </button>
+                            <!--
+                            <button type="button" mat-menu-item (click)="handleScan('back', 'download')">Download als
+                                PDF
+                            </button>
+                            -->
+                        </mat-menu>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="action-wrapper">
-            <button type="button" mat-raised-button color="danger" (click)="handleScan('back', 'preview')"
-                    *ngIf="state.back.showPhoto">
-                <mat-icon>document_scanner</mat-icon>
-                Opnieuw
+        <div class="stepper__actions">
+            <button mat-raised-button matStepperPrevious>Back</button>
+            <!--
+            <button mat-raised-button color="primary" *ngIf="state.back.photoUrl && state.front.photoUrl"
+                    [matMenuTriggerFor]="downloadComboMenu">Download beide scans
             </button>
-            <button type="button" mat-raised-button color="warn" (click)="handleScan('back', 'cancel')"
-                    *ngIf="state.back.showScanPreview">
-                <mat-icon>close_small</mat-icon>
-                Annuleren
-            </button>
-            <button type="button" mat-raised-button color="primary" class="download-action"
-                    *ngIf="state.back.showPhoto"
-                    (click)="handleScan('back', 'download')">
-                Download
-                <mat-icon aria-hidden="true" fontIcon="download" class="list-item-icon"></mat-icon>
-            </button>
-            <button type="button" mat-raised-button color="primary" class="download-action"
-                    *ngIf="state.back.showScanPreview || !state.back.showPhoto"
-                    [disabled]="!state.back.showScanPreview"
-                    (click)="takePicture('back')">
-                Foto nemen
-                <mat-icon aria-hidden="true" fontIcon="save" class="list-item-icon"></mat-icon>
-            </button>
+            <mat-menu #downloadComboMenu="matMenu">
+                <button type="button" mat-menu-item (click)="handleScan('back', 'download')">Download als JPEG
+                    afbeelding
+                </button>
+                <button type="button" mat-menu-item (click)="handleScan('back', 'download')">Download als PDF</button>
+            </mat-menu>
+            -->
         </div>
-    </div>
+    </mat-step>
 
-</div>
-
-<!--
-<mat-divider class="divider"></mat-divider>
-<div class="action-body">
-    <span class="">
-        Gebruik de download knop onder elke scan om de scan als enkele afbeelding te downloaden. Gebruik deze knop om de beide afbeeldingen samen te downloaden als 1 afbeelding.
-    </span>
-    <button mat-raised-button color="primary" disabled class="action-body__button">
-        Download als 1 afbeelding
-        <mat-icon aria-hidden="true" fontIcon="download" class="list-item-icon"></mat-icon>
-    </button>
-</div>
-<mat-divider class="divider"></mat-divider>
--->
+    <!-- Icon overrides. -->
+    <ng-template matStepperIcon="reason">
+        <mat-icon>edit_note</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="scan">
+        <mat-icon>document_scanner</mat-icon>
+    </ng-template>
+</mat-horizontal-stepper>

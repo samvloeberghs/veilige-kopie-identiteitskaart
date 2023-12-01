@@ -14,26 +14,3 @@
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($theme);
-
-a.link {
-  color: #444;
-  text-decoration: none;
-  border-bottom: 1px dotted currentColor;
-
-  &:hover {
-    text-decoration: none;
-    border-bottom: 1px solid currentColor;
-  }
-}
-
-p {
-  margin: 0 0 $gridunit * 2 0;
-}
-
-ol, ul {
-  margin: 0 0 $gridunit * 2 0;
-
-  li {
-    margin-bottom: $gridunit;
-  }
-}

@@ -11,26 +11,34 @@ $gridunit: 8px;
 }
 
 .toolbar {
-  &--is-mobile {
-    position: fixed;
-    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
-    z-index: 2;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  z-index: 2;
 
   &__title {
     margin-left: $gridunit;
+  }
+
+  &__left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__logo {
+    width: $gridunit * 4;
+    height: $gridunit * 4;
+    display: block;
   }
 }
 
 .sidenav-container {
   /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
      causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
-  flex: 1;
-
-  &--is-mobile {
-    flex: 1 0 auto;
-    margin-top: $gridunit * 7;
-  }
+  flex: 1 0 auto;
+  margin-top: $gridunit * 7;
 }
 
 .list-item-icon {
@@ -54,6 +62,7 @@ $gridunit: 8px;
     padding: $gridunit * 2;
     font-size: 0.9em;
     word-break: break-all;
+
     strong {
       font-weight: 500;
     }
@@ -61,19 +70,24 @@ $gridunit: 8px;
 
 }
 
-.body {
-  padding: $gridunit * 3;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
 .footer-body {
-  padding: 24px;
-  max-width: 800px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: $gridunit;
   margin: 0 auto;
   color: #666;
-  font-style: italic;
   font-size: 1rem;
   line-height: 1.5rem;
   border-top: 1px solid #ddd;
+  text-align: center;
+  background: white;
+  box-sizing: border-box;
+}
+
+main {
+  padding: $gridunit * 3 0 $gridunit * 5 0;
+  max-width: 800px;
+  margin: 0 auto;
 }

@@ -1,10 +1,11 @@
 import { ApplicationConfig, isDevMode } from '@angular/core';
+import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
+import { JsonLdService } from 'ngx-seo';
 
 import { appRoutes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
 import { providers as windowProviders } from '../services/window';
 
 export const appConfig: ApplicationConfig = {
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
             registrationStrategy: 'registerWhenStable:30000'
         }),
         provideClientHydration(),
-        windowProviders
+        windowProviders,
+        JsonLdService
     ],
 };

@@ -1,6 +1,8 @@
 @use '@angular/material' as mat;
 
 @mixin base-content {
+  padding: 0 $gridunit * 3;
+
   &__title {
     font: mat.get-theme-typography($theme, headline-5, font);
     letter-spacing: mat.get-theme-typography($theme, headline-5, letter-spacing);

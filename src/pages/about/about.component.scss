@@ -13,7 +13,7 @@
   @include base-content;
 
   &__signature {
-    margin-top: $gridunit * 4;
+    margin: $gridunit * 3 0 $gridunit * 2 0;
     display: flex;
     gap: $gridunit * 3;
     align-items: center;

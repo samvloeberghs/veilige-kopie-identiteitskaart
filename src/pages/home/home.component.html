@@ -1,46 +1,54 @@
-<h2 class="home__title">Welkom op de handige "<strong>Veilige kopie ID kaart</strong>" applicatie</h2>
-<p class="home__text">
-    Bij het aanmaken van een account bij heel wat online services wordt er gevraagd om een kopie van je identiteitskaart.
-    <strong>Deze applicatie helpt je om een veilige kopie te maken van je identiteitskaart </strong> of ander privacy-gevoelig document.
-</p>
-<h3 class="home__sub-title">Hoe werkt het?</h3>
-<p class="home__text">
-    De applicatie werkt onder andere door het toevoegen van een watermerk aan de scan. Dit watermerk bevat
-    de reden voor de kopie en optioneel een geldigheidsdatum. Op deze manier <strong>limiteer je het gebruik van de kopie</strong> tot een bepaalde reden en zelfs een
-    bepaalde
-    datum.
-</p>
-<div class="alert alert--info">
-    <mat-icon class="alert__icon">info</mat-icon>
-    <p class="alert__description">
-        <strong>Uw gegevens zijn veilig</strong>: Er worden geen cookies gebruikt en al uw data wordt lokaal
-        verwerkt in de applicatie waardoor er niets wordt verstuurd naar een server.
+<div class="home" [style.padding-bottom.px]="paddingBottom">
+    <h2 class="home__title">Welkom op de handige "<strong>Veilige kopie ID kaart</strong>" applicatie</h2>
+    <p class="home__text">
+        Bij het aanmaken van een account bij heel wat online services wordt er gevraagd om een kopie van je
+        identiteitskaart.
+        <strong>Deze applicatie helpt je om een veilige kopie te maken van je identiteitskaart </strong> of ander
+        privacy-gevoelig document.
     </p>
-</div>
-<h3 class="home__sub-title">Stappenplan</h3>
-<ol class="home__text">
-    <li>Je geeft een zo speciek mogelijke reden op voor het maken van de kopie door ook aan te geven in welke periode de kopie geldig is.</li>
-    <li>Je neemt een foto/scan van de voorkant en/of de achterkant van je identiteitskaart.</li>
-    <li>Je download de scans en gebruikt deze ter verificatie van uw identiteit bij de relevant service.</li>
-</ol>
+    <h3 class="home__sub-title">Hoe werkt het?</h3>
+    <p class="home__text">
+        De applicatie werkt onder andere door het toevoegen van een watermerk aan de scan. Dit watermerk bevat
+        de reden voor de kopie en optioneel een geldigheidsdatum. Op deze manier <strong>limiteer je het gebruik van de
+        kopie</strong> tot een bepaalde reden en zelfs een
+        bepaalde
+        datum.
+    </p>
+    <div class="alert alert--info">
+        <mat-icon class="alert__icon">info</mat-icon>
+        <p class="alert__description">
+            <strong>Uw gegevens zijn veilig</strong>: Er worden geen cookies gebruikt en al uw data wordt lokaal
+            verwerkt in de applicatie waardoor er niets wordt verstuurd naar een server.
+        </p>
+    </div>
+    <h3 class="home__sub-title">Stappenplan</h3>
+    <ol class="home__text">
+        <li>Je geeft een zo speciek mogelijke reden op voor het maken van de kopie door ook aan te geven in welke
+            periode de kopie geldig is.
+        </li>
+        <li>Je neemt een foto/scan van de voorkant en/of de achterkant van je identiteitskaart.</li>
+        <li>Je downloadt de scans en gebruikt deze ter verificatie van uw identiteit bij de relevant service.</li>
+    </ol>
 
-<form class="reason-body" method="GET" action="/kopie-maken">
-    <h3 class="home__sub-title"><label for="reden">Ga meteen van start</label></h3>
+    <form class="reason-body" novalidate #reasonForm (submit)="handleSubmit($event)">
+        <h3 class="home__sub-title"><label for="reden">Ga meteen van start</label></h3>
 
-    <label class="home__text home__label" for="reden">
-        Begin met het opgeven van de reden voor het maken van de kopie:
-    </label>
-    <mat-form-field class="reason-body__field">
+        <label class="home__text home__label" for="reden">
+            Begin met het opgeven van de reden voor het maken van de kopie:
+        </label>
+        <mat-form-field class="reason-body__field">
         <textarea matInput id="reden"
                   name="reden"
+                  [(ngModel)]="reason"
                   placeholder="Bijvoorbeeld: &quot;Openen van rekening bij ING bank in januari 2024&quot;. Opgelet: hoe specifieker hoe beter!"
                   rows="3"></textarea>
-        <!-- Openen van een rekening bij ING in November 2023 -->
-    </mat-form-field>
-    <div class="home__action-wrapper">
-        <button type="submit" mat-raised-button color="primary">
-            <mat-icon>start</mat-icon>
-            Starten
-        </button>
-    </div>
-</form>
+            <!-- Openen van een rekening bij ING in November 2023 -->
+        </mat-form-field>
+        <div class="home__action-wrapper">
+            <button mat-raised-button color="primary">
+                <mat-icon>start</mat-icon>
+                Starten
+            </button>
+        </div>
+    </form>
+</div>

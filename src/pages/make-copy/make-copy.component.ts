@@ -1,15 +1,20 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { DOCUMENT, NgIf } from '@angular/common';
-import { FormControl, FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, NgModel } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImageHandlingService } from '../../services/image-handling.service';
 import { WINDOW } from '../../services/window';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { combineLatest, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { MatMenuModule } from '@angular/material/menu';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 interface State {
     'front': {
@@ -34,14 +39,25 @@ interface State {
         NgIf,
         FormsModule,
         MatFormFieldModule,
-        MatInputModule
+        MatInputModule,
+        MatStepperModule,
+        MatMenuModule
+    ],
+    providers: [
+        {
+            provide: STEPPER_GLOBAL_OPTIONS,
+            useValue: { displayDefaultIndicatorType: false }
+        }
     ],
     templateUrl: './make-copy.component.html',
     styleUrl: './make-copy.component.scss',
 })
-export default class MakeCopyComponent {
+export default class MakeCopyComponent implements AfterViewInit {
     @ViewChild('reasonNgModel')
-    private readonly reasonNgModel: any;
+    private readonly reasonNgModel!: NgModel;
+
+    @ViewChild('stepper')
+    private readonly stepper!: MatStepper;
 
     readonly #document = inject(DOCUMENT);
     readonly #window = inject(WINDOW);
@@ -50,9 +66,9 @@ export default class MakeCopyComponent {
     readonly #imageHandlingService = inject(ImageHandlingService);
 
     readonly now = new Date();
+    readonly #viewReady = new Subject<void>();
 
     reason = '';
-    reasonEmpty = true;
 
     state: State = {
         'front': {
@@ -66,13 +82,18 @@ export default class MakeCopyComponent {
     }
 
     constructor() {
-        this.#listenToReasonSearchParam();
+        this.#listenToSearchParams();
+    }
+
+    ngAfterViewInit(): void {
+        this.#viewReady.next();
     }
 
     handleScan(side: 'front' | 'back', command: 'cancel' | 'preview' | 'download'): void {
         if (command === 'cancel') {
             this.state[side].showPhoto = false;
             this.state[side].showScanPreview = false;
+            this.state[side].photoUrl = undefined;
         }
 
         if (command === 'preview') {
@@ -106,11 +127,11 @@ export default class MakeCopyComponent {
         const videoHeight = video.videoHeight;
 
         let sideText = 'Voorkant';
-        if(side === 'back') {
+        if (side === 'back') {
             sideText = 'Achterkant';
         }
 
-        const fullReason = `(${ this.now.toLocaleDateString() } - ${sideText}) - Reden kopie: ${ this.reason }`;
+        const fullReason = `(${ this.now.toLocaleDateString() } - ${ sideText }) - Reden kopie: ${ this.reason }`;
         this.#imageHandlingService.start('#ffffff', 0.5, 1.4, 2, this.reason, fullReason, player, newWidth, newHeight, xOffset, yOffset, videoWidth, videoHeight);
 
         // save the state
@@ -160,13 +181,22 @@ export default class MakeCopyComponent {
         }, 100);
     }
 
-    #listenToReasonSearchParam(): void {
+    #listenToSearchParams(): void {
         // TODO: untilDestroyed
-        this.#activatedRoute.queryParams.subscribe((params) => {
-            if (params['reden']) {
-                this.reason = params['reden'];
-                this.reasonEmpty = this.reason.length < 10;
-            }
-        })
+        combineLatest([
+            this.#viewReady,
+            this.#activatedRoute.queryParams
+        ])
+            .pipe(
+                map(([_, params]) => params)
+            )
+            .subscribe((params) => {
+                if (params['reden']) {
+                    this.reason = params['reden'];
+                }
+                if (params['stap'] && this.reason.length >= 10 && this.reason.length <= 75) {
+                    this.stepper.selectedIndex = +params['stap'] - 1;
+                }
+            })
     }
 }

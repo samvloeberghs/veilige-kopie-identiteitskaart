@@ -10,7 +10,15 @@
 }
 
 .reason-body {
+  position: fixed;
+  bottom: 16px;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: #fff;
   margin: 0 0 $gridunit * 3 0;
+  padding: $gridunit * 2   $gridunit * 3 $gridunit * 2.5 $gridunit * 3;
+  box-shadow: 0 -5px 20px -5px rgba(0,0,0, 0.35);
 
   &__field {
     width: 100%;

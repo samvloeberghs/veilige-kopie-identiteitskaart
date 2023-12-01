@@ -11,10 +11,12 @@ import { filter } from 'rxjs';
 import { UpdateService } from '../services/update.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WINDOW } from '../services/window';
+import { RouteHelper } from '../services/route-helper.service';
+import { MatRippleModule } from '@angular/material/core';
 
 @Component({
     standalone: true,
-    imports: [RouterOutlet, RouterLink, RouterLinkActive, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, MatListModule, NgIf],
+    imports: [RouterOutlet, RouterLink, RouterLinkActive, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, MatListModule, NgIf, MatRippleModule],
     selector: 'vki-root',
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
@@ -27,6 +29,8 @@ export class AppComponent implements OnDestroy {
     readonly #matSnackBar = inject(MatSnackBar);
     readonly #document = inject(DOCUMENT);
     readonly #window = inject(WINDOW);
+    // currently unused, but needed
+    readonly currentUrl$ = inject(RouteHelper).currentUrl$;
 
     #mobileQueryListener!: () => void;
 
